@@ -1,0 +1,28 @@
+<head>
+  <title>Participatory Planning App</title>
+</head>
+
+<body>
+  <h1>Welcome to Participatory Planning!</h1>
+
+  {{> loginButtons}}
+  <p></p>
+  {{#if currentUser}}
+    <form class="create-game">
+      <button class="addgame">Create game</button>
+    </form>
+    {{> gamesList}}
+  {{/if}}
+</body>
+
+<template name="gamesList">
+  <ul>
+  {{#each a in gamesToShow}}
+    <li>
+    {{a._id}} | {{a.createdAt}}
+    </li>
+  {{/each}}
+  </ul>
+</template>
+
+
