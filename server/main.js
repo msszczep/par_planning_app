@@ -1,7 +1,10 @@
 import '../imports/api/games.js'
+import '../imports/api/currentstate.js'
 import { Meteor } from 'meteor/meteor';
+import { CurrentState } from '../imports/api/currentstate.js';
 
-Meteor.startup(() => {
-  // code to run on server at startup
-});
+if (CurrentState.find().count() === 0) {
+  CurrentState.insert({currentGame: 1});
+}
+
 

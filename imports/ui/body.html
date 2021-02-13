@@ -16,13 +16,20 @@
 </body>
 
 <template name="gamesList">
-  <ul>
-  {{#each a in gamesToShow}}
-    <li>
-    {{a._id}} | {{a.createdAt}}
-    </li>
+
+  {{#each c in currentState}}
+    <p>{{c._id}} {{c.currentGame}}</p>
   {{/each}}
-  </ul>
+
+  <form>
+    <ul>
+    {{#each a in gamesToShow}}
+      <li>
+      <button class="joingame" value="{{a._id}}">Join game {{a._id}}</button>
+      </li>
+    {{/each}}
+    </ul>
+  </form>
 </template>
 
 
