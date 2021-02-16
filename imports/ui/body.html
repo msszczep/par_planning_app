@@ -3,33 +3,78 @@
 </head>
 
 <body>
-  <h1>Welcome to Participatory Planning!</h1>
+  <h1>Welcome to Participatory Planning!
+  </h1>
 
   {{> loginButtons}}
-  <p></p>
+  <p>
+  </p>
   {{#if currentUser}}
     <form class="create-game">
-      <button class="addgame">Create game</button>
+      <button class="addgame">Create game
+      </button>
+      <button class="addworkplace">Create workplace
+      </button>
+      <button class="addneighborhood">Create neighborhood
+      </button>
     </form>
-    {{> gamesList}}
+    {{> itemsList}}
   {{/if}}
 </body>
 
-<template name="gamesList">
+<template name="itemsList">
 
+  <br>
   {{#each c in currentState}}
-    <p>{{c._id}} {{c.currentGame}}</p>
+    ID: {{c._id}}
+    <br>game: {{c.currentGame}}
+    <br>workplace: {{c.currentWorkplace}}
+    <br>neighborhood: {{c.currentNeighborhood}}
   {{/each}}
 
-  <form>
-    <ul>
-    {{#each a in gamesToShow}}
-      <li>
-      <button class="joingame" value="{{a._id}}">Join game {{a._id}}</button>
-      </li>
-    {{/each}}
-    </ul>
-  </form>
+  <br><br>
+  <table border="2px">
+   <tr>
+     <th>Games
+     </th>
+     <th>Workplaces
+     </th>
+     <th>Neighborhoods
+     </th>
+   </tr>
+    <tr>
+      <td>
+      <ul>
+        {{#each a in gamesToShow}}
+          <li>
+            <button class="joingame" value="{{a._id}}">Join game {{a._id}}
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+      </td>
+      <td>
+      <ul>
+        {{#each a in workplacesToShow}}
+          <li>
+            <button class="joinworkplace" value="{{a._id}}">Join workplace {{a._id}}
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+      </td>
+      <td>
+      <ul>
+        {{#each a in neighborhoodsToShow}}
+          <li>
+            <button class="joinneighborhood" value="{{a._id}}">Join neighborhood {{a._id}}
+            </button>
+          </li>
+        {{/each}}
+      </ul>
+      </td>
+      </tr>
+  </table>
 </template>
 
 
