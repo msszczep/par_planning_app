@@ -7,17 +7,8 @@
   </h1>
 
   {{> loginButtons}}
-  <p>
-  </p>
+  <br>
   {{#if currentUser}}
-    <form class="create-game">
-      <button class="addgame">Create game
-      </button>
-      <button class="addworkplace">Create workplace
-      </button>
-      <button class="addneighborhood">Create neighborhood
-      </button>
-    </form>
     {{> itemsList}}
   {{/if}}
 </body>
@@ -35,8 +26,6 @@
   <br><br>
   <table border="2px">
    <tr>
-     <th>Games
-     </th>
      <th>Workplaces
      </th>
      <th>Neighborhoods
@@ -44,20 +33,10 @@
    </tr>
     <tr>
       <td>
-      <ul>
-        {{#each a in gamesToShow}}
-          <li>
-            <button class="joingame" value="{{a._id}}">Join game {{a._id}}
-            </button>
-          </li>
-        {{/each}}
-      </ul>
-      </td>
-      <td>
-      <ul>
+        <ul>
         {{#each a in workplacesToShow}}
           <li>
-            <button class="joinworkplace" value="{{a._id}}">Join workplace {{a._id}}
+            <button class="joinworkplace" value="{{a._id}}">Join {{a.name}}
             </button>
           </li>
         {{/each}}
@@ -67,7 +46,7 @@
       <ul>
         {{#each a in neighborhoodsToShow}}
           <li>
-            <button class="joinneighborhood" value="{{a._id}}">Join neighborhood {{a._id}}
+            <button class="joinneighborhood" value="{{a._id}}">Join {{a.name}}
             </button>
           </li>
         {{/each}}
