@@ -16,14 +16,11 @@
 <template name="itemsList">
 
   <br>
-  {{#each c in currentState}}
-    ID: {{c._id}}
-    <br>game: {{c.currentGame}}
-    <br>workplace: {{c.currentWorkplace}}
-    <br>neighborhood: {{c.currentNeighborhood}}
-  {{/each}}
-
-  <br><br>
+  Your workplace: {{userMetadata.workplace}}
+  <br>
+  Your neighborhood: {{userMetadata.neighborhood}}
+  <br>
+  <br>
   <table border="2px">
    <tr>
      <th>Workplaces

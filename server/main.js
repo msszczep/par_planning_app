@@ -1,9 +1,8 @@
 import '../imports/api/games.js'
-import '../imports/api/currentstate.js'
+import '../imports/api/usermetadata.js'
 import '../imports/api/neighborhoods.js'
 import '../imports/api/workplaces.js'
 import { Meteor } from 'meteor/meteor';
-import { CurrentState } from '../imports/api/currentstate.js';
 import { Games } from '../imports/api/games.js';
 import { Workplaces } from '../imports/api/workplaces.js';
 import { Neighborhoods } from '../imports/api/neighborhoods.js';
