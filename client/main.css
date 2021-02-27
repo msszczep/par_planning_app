@@ -2,13 +2,12 @@ body {
   font-family: sans-serif;
 }
 
-.editpane {
-  width: 33%;
-  float: left;
-  padding: 10px;
+td.editpane {
+  vertical-align: top;
+  width: 35%;
+  border-right: 2px solid #000000;
 }
 
-.viewpane {
-  width: auto;
-  padding: 20px;
+td.viewpane {
+  padding: 10px;
 }

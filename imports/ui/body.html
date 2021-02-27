@@ -3,59 +3,126 @@
 </head>
 
 <body>
-  <div class="editpane">
-    <h1>Welcome to Participatory Planning!</h1>
+  <table>
+  <tr>
+  <td class="editpane">
+    <h3>Welcome to Participatory Planning!
+    </h3>
 
     {{> loginButtons}}
     <br>
     {{#if currentUser}}
-      {{> itemsList}}
+      {{> editpaneloggedin}}
+    {{else}}
+      {{> editpaneloggedout}}
     {{/if}}
-  </div>
+  </td>
 
-  <div class="viewpane">
-    View pane
-  </div>
+  <td class="viewpane">
+    {{#if currentUser}}
+      {{> viewpaneloggedin}}
+    {{else}}
+      {{> viewpaneinstructions}}
+    {{/if}}
+  </td>
+  </tr>
+  </table>
 </body>
 
-<template name="itemsList">
+<template name="viewpaneloggedin">
+Logged in
+</template>
 
+<template name="viewpaneinstructions">
+RULES:<br>
+1. Each new actor does the following:<br>
+A. Join one worker council (WC) — pizzeria, bakery, or brewery.<br>
+B. Join one consumer council (CC) — Goldman Green, Rocker Hill, Bakunin Bay.<br>
+<br>
+2.    Each WC produces a single good, and each WC has three ways to produce that good.<br>
+	A.	One pizza comes can come from one hour of labor plus one bushel of wheat.<br>
+	B.	One pizza comes can come from one-and-a-half hours of labor plus a half-bushel of wheat.<br>
+	C.	One pizza comes can come from a half-hour of labor plus one-and-a-half bushels of wheat.<br>
+	D.	One beer comes can come from one hour of labor plus one bushel of wheat.<br>
+	E.	One beer comes can come from one-and-three-quarter hours of labor plus a quarter-bushel of wheat.<br>
+	F.	One beer comes can come from a quarter-hour of labor plus one-and-three-quarter bushels of wheat.<br>
+	G.	One loaf of bread can come from one hour of labor plus one bushel of wheat.<br>
+	H.	One loaf of bread comes can come from one-and-one-quarter hours of labor plus a three-quarter bushels of wheat.<br>
+	I.	One loaf of bread comes can come from three-quarter-hours of labor plus one-and-one-quarter bushels of wheat.<br>
+<br>
+3. Each WC submits the number of hours they wish to work (“work-hours”), requests a number of bushels of wheat, along with a proposed number of “deliverables” (the goods produced by the WC).    This is determined within a WC and replayed by a “reporter” from that WC to the rest of the game.<br>
+<br>
+4. Each actor in a WC has a wage of 15 credits per hour.<br>
+<br>
+5. A CC’s spending budget is the total number of credits of all of its members earned in its workers council.<br>
+<br>
+6. Each actor in a CC submit the number of pizzas, beers, and loaves of bread they wish to consume.    The total number of requests for all actors in a CC comprise that number for that CC.    An individual cannot spend more credits that they have earned.<br>
+<br>
+7. There are five indicative prices — one for each of the final goods produced (bread, pizza, beer) as well as a price for a bushel of wheat and an hour of labor.    IMPORTANT NOTE: The indicative price of labor DOES NOT AFFECT the wage, which remains at 15 credits per hour throughout the entire game.<br>
+<br>
+8. There is a finite amount of labor hours in the entire game, assigned as the number of actors times ten.    <br>
+<br>
+9. There is a finite number of bushels of wheat for the entire game, assigned as the number of actors times twelve.<br>
+<br>
+10.    Each WC has a capacity constraint; each WC can produce a maximum number of goods equal to eleven times the number of actors in a given WC.    For example, if the bakery WC has 10 actors, that WC can produce at maximum 110 loaves of bread. <br>
+<br>
+11. A WC’s social benefit (SB) is determined by taking the number of output units times its price (e.g., the number of pizzas produced by the pizzeria times the price of a single pizza).<br>
+<br>
+12. A WC’s social cost (SC) is determined by taking the number of labor hours from all of its members multiplied by current indicative price of labor, and adding that to the number of bushels of wheat requested by the WC multiplied by the current indicative price of wheat.<br>
+<br>
+13. In an iteration, the demands of all CCs are aggregated and compared with the corresponding supplies of goods of all WC.    A participatory plan is complete when all of the following conditions are met:<br>
+	A. The supply is equal or greater than the demand.    <br>
+	B. All CCs have sufficient credits for their requested goods at the current price.<br>
+	C. The total supply and total demand are within 10% of each other.<br>
+	D. All WCs have a SB/SC ratio greater than one.    (NOTE: The model accords the right of other councils to refuse a plan if there is reason to do so.    For the purposes of this simulation, WCs are automatically accepted or rejected via this rule.)<br>
+<br>
+14. If all of the conditions are not met, prices are adjusted down if supply for a good is greater than demand, or up if demand is greater than supply.    The price adjustment rule is W = V(1.05 - 0.5^V) except when V > 0.25, then the new adjustment is 0.25, where:<br>
+<br>
+W = percentage change in the price of a good in the next iteration <br>
+V = percentage excess supply for that good in the present iteration
+<br><br>
+Once all the prices are adjusted, a new iteration begins where actors resubmit the number of work hours and number and types of goods to consume, adjusting up or down as needed.    We repeat until a participatory plan is complete.
+</template>
+
+<template name="editpaneloggedout">
+  <br>
+  Login or create an account to begin.
+</template>
+
+<template name="joinneighborhoodpane">
+Choose a neighborhood to join:
+<br><br>
+        {{#each a in neighborhoodsToShow}}
+            <button class="joinneighborhood" value="{{a._id}}">Join {{a.name}}
+            </button>
+            <br>
+        {{/each}}
+</template>
+
+<template name="joinworkplacepane">
+Choose a workplace to join:
+<br><br>
+        {{#each a in workplacesToShow}}
+            <button class="joinworkplace" value="{{a._id}}">Join {{a.name}}
+            </button>
+            <br>
+        {{/each}}
+</template>
+
+<template name="editpaneloggedin">
   <br>
   Your workplace: {{userMetadata.workplace}}
   <br>
   Your neighborhood: {{userMetadata.neighborhood}}
+  <br><br>
+  {{#if needsWorkplace}}
+    {{> joinworkplacepane}}
+    <br>
+  {{/if}}
+  {{#if needsNeighborhood}}
+    {{> joinneighborhoodpane}}
+  {{/if}}
   <br>
-  <br>
-  <table border="2px">
-   <tr>
-     <th>Workplaces
-     </th>
-     <th>Neighborhoods
-     </th>
-   </tr>
-    <tr>
-      <td>
-        <ul>
-        {{#each a in workplacesToShow}}
-          <li>
-            <button class="joinworkplace" value="{{a._id}}">Join {{a.name}}
-            </button>
-          </li>
-        {{/each}}
-      </ul>
-      </td>
-      <td>
-      <ul>
-        {{#each a in neighborhoodsToShow}}
-          <li>
-            <button class="joinneighborhood" value="{{a._id}}">Join {{a.name}}
-            </button>
-          </li>
-        {{/each}}
-      </ul>
-      </td>
-      </tr>
-  </table>
 </template>
 
 
