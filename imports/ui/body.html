@@ -3,14 +3,19 @@
 </head>
 
 <body>
-  <h1>Welcome to Participatory Planning!
-  </h1>
+  <div class="editpane">
+    <h1>Welcome to Participatory Planning!</h1>
 
-  {{> loginButtons}}
-  <br>
-  {{#if currentUser}}
-    {{> itemsList}}
-  {{/if}}
+    {{> loginButtons}}
+    <br>
+    {{#if currentUser}}
+      {{> itemsList}}
+    {{/if}}
+  </div>
+
+  <div class="viewpane">
+    View pane
+  </div>
 </body>
 
 <template name="itemsList">
