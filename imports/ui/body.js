@@ -21,7 +21,7 @@ Template.editpaneloggedin.helpers({
 
   needsWorkplace() {
     u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if (u === undefined) {
+    if ((u === undefined) || (u != undefined && u.workplace === undefined)) {
       return true;
     } else {
       return u.workplace === '';
