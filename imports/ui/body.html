@@ -30,7 +30,31 @@
 </body>
 
 <template name="viewpaneloggedin">
-Logged in
+<b>Workplaces</b><br>
+<table>
+<tr>
+{{#each a in workersToShow}}
+  <td class="viewpanedetail"><b>{{a.workplace}}</b><br>
+    {{#each e in a.workers}}
+       {{e.email}}<br>
+    {{/each}}
+  </td>
+{{/each}}
+</tr>
+</table>
+<br><br>
+<b>Neighborhoods</b><br>
+<table>
+<tr>
+{{#each a in neighborsToShow}}
+  <td class="viewpanedetail"><b>{{a.neighborhood}}</b><br>
+    {{#each e in a.neighbors}}
+       {{e.email}}<br>
+    {{/each}}
+  </td>
+{{/each}}
+</tr>
+</table>
 </template>
 
 <template name="viewpaneinstructions">

@@ -3,6 +3,7 @@ import { Games } from '../api/games.js';
 import { Usermetadata } from '../api/usermetadata.js';
 import { Neighborhoods } from '../api/neighborhoods.js';
 import { Workplaces } from '../api/workplaces.js';
+import { Meteor } from 'meteor/meteor';
 
 import './body.html';
 
@@ -52,6 +53,51 @@ Template.joinneighborhoodpane.helpers({
   neighborhoodsToShow() {
     return Neighborhoods.find({});
   },
+
+});
+
+Template.viewpaneloggedin.helpers({
+
+  neighborhoodsToShow() {
+    return Neighborhoods.find({});
+  },
+
+  workplacesToShow() {
+    return Workplaces.find({});
+  },
+
+  workersToShow() {
+    w = Workplaces.find({}).fetch({});
+    m = Usermetadata.find({}).fetch({});
+    a = [];
+    for (let i = 0; i < w.length; i++) {
+      b = [];
+      for (let j = 0; j < m.length; j++) {
+        if (w[i]._id === m[j].workplace) {
+          b.push({email: Meteor.users.find({_id: m[j].userId}).fetch({})[0].emails[0].address});
+        }
+      }
+      a.push({workplace: w[i].name, workers: b});
+    }
+    return a;
+  },
+
+  neighborsToShow() {
+    n = Neighborhoods.find({}).fetch({});
+    m = Usermetadata.find({}).fetch({});
+    a = [];
+    for (let i = 0; i < n.length; i++) {
+      b = [];
+      for (let j = 0; j < m.length; j++) {
+        if (n[i]._id === m[j].neighborhood) {
+          b.push({email: Meteor.users.find({_id: m[j].userId}).fetch({})[0].emails[0].address});
+        }
+      }
+      a.push({neighborhood: n[i].name, neighbors: b});
+    }
+    console.log(a);
+    return a;
+  }
 
 });
 

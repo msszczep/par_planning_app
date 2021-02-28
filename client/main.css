@@ -11,3 +11,8 @@ td.editpane {
 td.viewpane {
   padding: 10px;
 }
+
+td.viewpanedetail {
+  padding: 5px;
+  border: 2px solid;
+}
