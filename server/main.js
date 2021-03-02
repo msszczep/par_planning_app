@@ -2,6 +2,7 @@ import '../imports/api/games.js'
 import '../imports/api/usermetadata.js'
 import '../imports/api/neighborhoods.js'
 import '../imports/api/workplaces.js'
+import '../imports/api/iterationmetadata.js'
 import { Meteor } from 'meteor/meteor';
 import { Games } from '../imports/api/games.js';
 import { Workplaces } from '../imports/api/workplaces.js';

@@ -3,6 +3,7 @@ import { Games } from '../api/games.js';
 import { Usermetadata } from '../api/usermetadata.js';
 import { Neighborhoods } from '../api/neighborhoods.js';
 import { Workplaces } from '../api/workplaces.js';
+import { IterationMetadata } from '../api/iterationmetadata.js';
 import { Meteor } from 'meteor/meteor';
 
 import './body.html';
@@ -36,6 +37,15 @@ Template.editpaneloggedin.helpers({
     } else {
       return u.neighborhood === '';
     }
+  },
+
+  hasWorkplaceAndNeighborhood() {
+    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
+    if (u.workplace != undefined && u.neighborhood != undefined) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 });
@@ -57,14 +67,6 @@ Template.joinneighborhoodpane.helpers({
 });
 
 Template.viewpaneloggedin.helpers({
-
-  neighborhoodsToShow() {
-    return Neighborhoods.find({});
-  },
-
-  workplacesToShow() {
-    return Workplaces.find({});
-  },
 
   workersToShow() {
     w = Workplaces.find({}).fetch({});
@@ -95,7 +97,6 @@ Template.viewpaneloggedin.helpers({
       }
       a.push({neighborhood: n[i].name, neighbors: b});
     }
-    console.log(a);
     return a;
   }
 
@@ -111,7 +112,7 @@ Template.joinworkplacepane.events({
 
 });
 
-Template.body.events({
+Template.joinneighborhoodpane.events({
 
   'click .joinneighborhood' (event) {
     event.preventDefault();
@@ -119,11 +120,18 @@ Template.body.events({
     Usermetadata.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, neighborhood: target.value},}, {upsert: true});
   },
 
-  'click .joinworkplace' (event) {
-    event.preventDefault();
-    const target = event.target;
-    Usermetadata.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, workplace: target.value},}, {upsert: true});
-  }
-
 });
 
+Template.submititerationdatapane.events({
+
+  'submit form' (event) {
+// get current iteration
+
+    event.preventDefault();
+    htw = event.target.hoursToWork.value;
+    recipeToUse = event.target.recipe.value;
+    IterationMetadata.update(Accounts.user()._id, {$set: {iteration: 1, userId: Accounts.user()._id, hoursToWork: htw, recipe: recipeToUse},}, {upsert: true});
+
+  },
+
+});

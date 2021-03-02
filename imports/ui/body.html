@@ -133,6 +133,34 @@ Choose a workplace to join:
         {{/each}}
 </template>
 
+<template name="submititerationdatapane">
+<b>Workplace questions:</b>
+<br>
+<form name="hourstoworksubmitform">
+How many hours do you want to work?<br>
+<input type="radio" name="hoursToWork" value="0">0
+<input type="radio" name="hoursToWork" value="1">1
+<input type="radio" name="hoursToWork" value="2">2
+<input type="radio" name="hoursToWork" value="3">3
+<input type="radio" name="hoursToWork" value="4">4
+<input type="radio" name="hoursToWork" value="5">5
+<br>
+<input type="radio" name="hoursToWork" value="6">6
+<input type="radio" name="hoursToWork" value="7">7
+<input type="radio" name="hoursToWork" value="8">8
+<input type="radio" name="hoursToWork" value="9">9
+<input type="radio" name="hoursToWork" value="10">10
+<br><br>
+Which recipe do you want to choose?<br>
+<input type="radio" name="recipe" value="A">High labor, low-resource<br>
+<input type="radio" name="recipe" value="B">Middling labor, middling resource<br>
+<input type="radio" name="recipe" value="C">Low labor, high-resource<br>
+<br><br>
+<input type="submit" value="SUBMIT">
+</form>
+
+</template>
+
 <template name="editpaneloggedin">
   <br>
   Your workplace: {{userMetadata.workplace}}
@@ -145,6 +173,9 @@ Choose a workplace to join:
   {{/if}}
   {{#if needsNeighborhood}}
     {{> joinneighborhoodpane}}
+  {{/if}}
+  {{#if hasWorkplaceAndNeighborhood}}
+    {{> submititerationdatapane}}
   {{/if}}
   <br>
 </template>
