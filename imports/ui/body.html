@@ -155,6 +155,57 @@ Which recipe do you want to choose?<br>
 <input type="radio" name="recipe" value="A">High labor, low-resource<br>
 <input type="radio" name="recipe" value="B">Middling labor, middling resource<br>
 <input type="radio" name="recipe" value="C">Low labor, high-resource<br>
+<br>
+<input type="submit" value="SUBMIT">
+</form>
+
+</template>
+
+<template name="submitccdatapane">
+<b>Neighborhood questions:</b>
+<br>
+<form name="consumptionsubmitform">
+How many pizzas do you want?<br>
+<input type="radio" name="pizza" value="0">0
+<input type="radio" name="pizza" value="1">1
+<input type="radio" name="pizza" value="2">2
+<input type="radio" name="pizza" value="3">3
+<input type="radio" name="pizza" value="4">4
+<input type="radio" name="pizza" value="5">5
+<br>
+<input type="radio" name="pizza" value="6">6
+<input type="radio" name="pizza" value="7">7
+<input type="radio" name="pizza" value="8">8
+<input type="radio" name="pizza" value="9">9
+<input type="radio" name="pizza" value="10">10
+<br><br>
+How many beers do you want?<br>
+<input type="radio" name="beer" value="0">0
+<input type="radio" name="beer" value="1">1
+<input type="radio" name="beer" value="2">2
+<input type="radio" name="beer" value="3">3
+<input type="radio" name="beer" value="4">4
+<input type="radio" name="beer" value="5">5
+<br>
+<input type="radio" name="beer" value="6">6
+<input type="radio" name="beer" value="7">7
+<input type="radio" name="beer" value="8">8
+<input type="radio" name="beer" value="9">9
+<input type="radio" name="beer" value="10">10
+<br><br>
+How many loaves of bread do you want?<br>
+<input type="radio" name="bread" value="0">0
+<input type="radio" name="bread" value="1">1
+<input type="radio" name="bread" value="2">2
+<input type="radio" name="bread" value="3">3
+<input type="radio" name="bread" value="4">4
+<input type="radio" name="bread" value="5">5
+<br>
+<input type="radio" name="bread" value="6">6
+<input type="radio" name="bread" value="7">7
+<input type="radio" name="bread" value="8">8
+<input type="radio" name="bread" value="9">9
+<input type="radio" name="bread" value="10">10
 <br><br>
 <input type="submit" value="SUBMIT">
 </form>
@@ -176,6 +227,9 @@ Which recipe do you want to choose?<br>
   {{/if}}
   {{#if hasWorkplaceAndNeighborhood}}
     {{> submititerationdatapane}}
+  {{/if}}
+  {{#if didSubmitWorkplaceData}}
+    {{> submitccdatapane}}
   {{/if}}
   <br>
 </template>

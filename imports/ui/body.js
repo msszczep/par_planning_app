@@ -41,12 +41,23 @@ Template.editpaneloggedin.helpers({
 
   hasWorkplaceAndNeighborhood() {
     u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if (u.workplace != undefined && u.neighborhood != undefined) {
+    i = IterationMetadata.find({userId: Accounts.user()._id}).fetch({})[0];
+    if (i.workplace != undefined && i.neighborhood != undefined && u.workplace === undefined && u.neighborhood === undefined) {
       return true;
     } else {
       return false;
     }
-  }
+  },
+
+  didSubmitWorkplaceData() {
+    i = IterationMetadata.find({userId: Accounts.user()._id}).fetch({})[0];
+    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
+    if (u.workplace != undefined && u.neighborhood != undefined && i.hoursToWork != undefined && i.recipe != undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
 });
 
@@ -131,6 +142,21 @@ Template.submititerationdatapane.events({
     htw = event.target.hoursToWork.value;
     recipeToUse = event.target.recipe.value;
     IterationMetadata.update(Accounts.user()._id, {$set: {iteration: 1, userId: Accounts.user()._id, hoursToWork: htw, recipe: recipeToUse},}, {upsert: true});
+
+  },
+
+});
+
+Template.submitccdatapane.events({
+
+  'submit form' (event) {
+// get current iteration
+
+    event.preventDefault();
+    p = event.target.pizza.value;
+    be = event.target.beer.value;
+    br = event.target.bread.value;
+    IterationMetadata.update(Accounts.user()._id, {$set: {iteration: 1, userId: Accounts.user()._id, pizza: p, beer: be, bread: br},}, {upsert: true});
 
   },
 
