@@ -140,8 +140,8 @@ Template.iterationstatuspane.helpers({
   },
 
   adminQ() {
-    // IterationCounter.find({}).fetch({})[0];
-    return true;
+    const email = Accounts.user().emails[0].address;
+    return ((email === "mitchell@szcz.org") || (email === "mitchell@chicagomediaaction.org"));
   }
 
 });
@@ -222,6 +222,18 @@ Template.choosebreadpane.events({
     const email = Accounts.user().emails[0].address;
     const target = event.target.value;
     IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, bread: target},}, {upsert: true});
+  }
+
+});
+
+Template.resetpane.events({
+
+  'click .newiteration' (event) {
+    event.preventDefault();
+    const i = IterationCounter.find({}).fetch({})[0];
+    const newincrement = i.iteration + 1;
+    console.log(i);
+    IterationCounter.update(i._id, {$set: {iteration: newincrement}});
   }
 
 });
