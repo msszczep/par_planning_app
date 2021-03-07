@@ -119,26 +119,13 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
   {{/each}}
 </template>
 
-
-
-<template name="choosecouncilspane">
-<form name="choosecouncilsform">
-Choose a workplace to join:
-<br><br>
-        {{#each a in workplacesToShow}}
-            <input type="radio" class="workplace" name="workplace" value="{{a._id}}" {{isChecked a._id}}>{{a.name}}
-            <br>
-        {{/each}}
-<br>
-Choose a neighborhood to join:
-<br><br>
-        {{#each a in neighborhoodsToShow}}
-            <input type="radio" class="neighborhood" name="neighborhood" value="{{a._id}}" {{isChecked a._id}}>{{a.name}}
-            <br>
-        {{/each}}
-<br>
-<input type="submit" value="SUBMIT">
-</form>
+<template name="choosehourspane">
+  <b>For your workplace, in iteration {{n}}, how many hours do you wish to work?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="hoursToWork" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
 </template>
 
 <template name="enteriterationdatapane">
@@ -223,6 +210,9 @@ Iteration Status Pane - fill me!
   {{/if}}
   {{#if chooseCcQ}}
     {{> chooseccpane}}
+  {{/if}}
+  {{#if chooseHoursQ}}
+    {{> choosehourspane}}
   {{/if}}
   <br>
 </template>

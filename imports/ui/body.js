@@ -12,16 +12,23 @@ Template.editpaneloggedin.helpers({
 
   chooseWcQ() {
     c = IterationCounter.find({}).fetch({})[0];
-    a = Actors.find({userId: Accounts.user()._id}).fetch({})[0];
-    i = IterationData.find({userId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
     return ((a === undefined) && (i === undefined));
   },
 
   chooseCcQ() {
     c = IterationCounter.find({}).fetch({})[0];
-    a = Actors.find({userId: Accounts.user()._id}).fetch({})[0];
-    i = IterationData.find({userId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
     return ((a != undefined) && (a.neighborhoodId === undefined) && (i === undefined));
+  },
+
+  chooseHoursQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i === undefined));
   },
 
 });
@@ -42,12 +49,25 @@ Template.choosewcpane.helpers({
 
 });
 
+Template.choosehourspane.helpers({
+
+  rangearray() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  },
+
+  n() {
+    return IterationCounter.find({}).fetch({})[0].iteration;
+  }
+
+});
+
 Template.choosewcpane.events({
 
   'click .joinworkplace' (event) {
     event.preventDefault();
+    const email = Accounts.user().emails[0].address;
     const target = event.target.value.split("/");
-    Actors.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, workplaceId: target[0], workplace: target[1]},}, {upsert: true});
+    Actors.update(Accounts.user()._id, {$set: {actorEmail: email, workplaceId: target[0], workplace: target[1]},}, {upsert: true});
   }
 
 });
@@ -57,8 +77,19 @@ Template.chooseccpane.events({
   'click .joinneighborhood' (event) {
     event.preventDefault();
     const target = event.target.value.split("/");
-    Actors.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, neighborhoodId: target[0], neighborhood: target[1]},}, {upsert: true});
+    Actors.update(Accounts.user()._id, {$set: {neighborhoodId: target[0], neighborhood: target[1]},}, {upsert: true});
   }
 
 });
 
+Template.choosehourspane.events({
+
+  'click .hoursToWork' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const target = event.target.value;
+    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, iteration: n, hoursToWork: target},}, {upsert: true});
+  }
+
+});
