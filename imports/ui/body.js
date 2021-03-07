@@ -173,7 +173,8 @@ Template.choosehourspane.events({
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
     const target = event.target.value;
-    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, iteration: n, hoursToWork: target},}, {upsert: true});
+    const email = Accounts.user().emails[0].address;
+    IterationData.insert({actorId: Accounts.user()._id, iteration: n, hoursToWork: target, actorEmail: email});
   }
 
 });
@@ -183,9 +184,9 @@ Template.chooserecipepane.events({
   'click .recipe' (event) {
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
-    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, recipe: target},}, {upsert: true});
+    IterationData.update(i._id, {$set: {recipe: target},});
   }
 
 });
@@ -195,9 +196,9 @@ Template.choosepizzapane.events({
   'click .pizza' (event) {
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
-    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, pizza: target},}, {upsert: true});
+    IterationData.update(i._id, {$set: {pizza: target},});
   }
 
 });
@@ -207,9 +208,9 @@ Template.choosebeerpane.events({
   'click .beer' (event) {
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
-    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, beer: target},}, {upsert: true});
+    IterationData.update(i._id, {$set: {beer: target},});
   }
 
 });
@@ -219,9 +220,9 @@ Template.choosebreadpane.events({
   'click .bread' (event) {
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
-    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, bread: target},}, {upsert: true});
+    IterationData.update(i._id, {$set: {bread: target},});
   }
 
 });
@@ -232,7 +233,6 @@ Template.resetpane.events({
     event.preventDefault();
     const i = IterationCounter.find({}).fetch({})[0];
     const newincrement = i.iteration + 1;
-    console.log(i);
     IterationCounter.update(i._id, {$set: {iteration: newincrement}});
   }
 
