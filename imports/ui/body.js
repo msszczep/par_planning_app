@@ -45,6 +45,27 @@ Template.editpaneloggedin.helpers({
     return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza === undefined));
   },
 
+  chooseBeerQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza != undefined) && (i.beer === undefined));
+  },
+
+  chooseBreadQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza != undefined) && (i.beer != undefined) && (i.bread === undefined));
+  },
+
+  iterationStatusQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza != undefined) && (i.beer != undefined) && (i.bread != undefined));
+  },
+
 });
 
 Template.chooseccpane.helpers({
@@ -83,6 +104,44 @@ Template.choosepizzapane.helpers({
 
   n() {
     return IterationCounter.find({}).fetch({})[0].iteration;
+  }
+
+});
+
+Template.choosebeerpane.helpers({
+
+  rangearray() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  },
+
+  n() {
+    return IterationCounter.find({}).fetch({})[0].iteration;
+  }
+
+});
+
+Template.choosebreadpane.helpers({
+
+  rangearray() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  },
+
+  n() {
+    return IterationCounter.find({}).fetch({})[0].iteration;
+  }
+
+});
+
+Template.iterationstatuspane.helpers({
+
+  iterationData() {
+    c = IterationCounter.find({}).fetch({})[0];
+    return IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+  },
+
+  adminQ() {
+    // IterationCounter.find({}).fetch({})[0];
+    return true;
   }
 
 });
@@ -139,6 +198,30 @@ Template.choosepizzapane.events({
     const email = Accounts.user().emails[0].address;
     const target = event.target.value;
     IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, pizza: target},}, {upsert: true});
+  }
+
+});
+
+Template.choosebeerpane.events({
+
+  'click .beer' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const target = event.target.value;
+    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, beer: target},}, {upsert: true});
+  }
+
+});
+
+Template.choosebreadpane.events({
+
+  'click .bread' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const target = event.target.value;
+    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, bread: target},}, {upsert: true});
   }
 
 });

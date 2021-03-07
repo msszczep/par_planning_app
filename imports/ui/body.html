@@ -146,46 +146,41 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
   {{/each}}
 </template>
 
-<template name="enteriterationdatapane">
-<b>Workplace questions:</b>
-<br>
-<form name="iterationdataform">
+<template name="choosebeerpane">
+  <b>In your neighborhood, in iteration {{n}}, how many beers do you want?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="beer" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
+</template>
 
-
-How many beers do you want?<br>
-<input type="radio" name="beer" value="0">0
-<input type="radio" name="beer" value="1">1
-<input type="radio" name="beer" value="2">2
-<input type="radio" name="beer" value="3">3
-<input type="radio" name="beer" value="4">4
-<input type="radio" name="beer" value="5">5
-<br>
-<input type="radio" name="beer" value="6">6
-<input type="radio" name="beer" value="7">7
-<input type="radio" name="beer" value="8">8
-<input type="radio" name="beer" value="9">9
-<input type="radio" name="beer" value="10">10
-<br><br>
-How many loaves of bread do you want?<br>
-<input type="radio" name="bread" value="0">0
-<input type="radio" name="bread" value="1">1
-<input type="radio" name="bread" value="2">2
-<input type="radio" name="bread" value="3">3
-<input type="radio" name="bread" value="4">4
-<input type="radio" name="bread" value="5">5
-<br>
-<input type="radio" name="bread" value="6">6
-<input type="radio" name="bread" value="7">7
-<input type="radio" name="bread" value="8">8
-<input type="radio" name="bread" value="9">9
-<input type="radio" name="bread" value="10">10
-<br><br>
-<input type="submit" value="SUBMIT">
-</form>
+<template name="choosebreadpane">
+  <b>In your neighborhood, in iteration {{n}}, how many loaves of bread do you want?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="bread" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
 </template>
 
 <template name="iterationstatuspane">
-Iteration Status Pane - fill me!
+Your iteration submission is now complete.  For iteration {{iterationData.iteration}}, you submitted:<br><br>
+Hours to work: {{iterationData.hoursToWork}}<br>
+Recipe: {{iterationData.recipe}}<br>
+<br>
+Number of pizzas: {{iterationData.pizza}}<br>
+Number of beers: {{iterationData.beer}}<br>
+Number of loaves of bread: {{iterationData.bread}}<br>
+<br><br>
+{{#if adminQ}}
+  {{> resetpane}}
+{{/if}}
+
+</template>
+
+<template name="resetpane">
+  <button class="pizza" >New iteration</button>
 </template>
 
 <template name="editpaneloggedin">
@@ -204,6 +199,12 @@ Iteration Status Pane - fill me!
   {{/if}}
   {{#if choosePizzaQ}}
     {{> choosepizzapane}}
+  {{/if}}
+  {{#if chooseBeerQ}}
+    {{> choosebeerpane}}
+  {{/if}}
+  {{#if iterationStatusQ}}
+    {{> iterationstatuspane}}
   {{/if}}
   <br>
 </template>
