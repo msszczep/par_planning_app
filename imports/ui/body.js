@@ -1,163 +1,64 @@
 import { Template } from 'meteor/templating';
-import { Games } from '../api/games.js';
-import { Usermetadata } from '../api/usermetadata.js';
-import { Neighborhoods } from '../api/neighborhoods.js';
-import { Workplaces } from '../api/workplaces.js';
-import { IterationMetadata } from '../api/iterationmetadata.js';
+import { Actors } from '../api/actors.js';
+import { Councils } from '../api/councils.js';
+import { IterationCounter } from '../api/iterationcounter.js';
+import { IterationData } from '../api/iterationdata.js';
+import { Prices } from '../api/prices.js';
 import { Meteor } from 'meteor/meteor';
 
 import './body.html';
 
 Template.editpaneloggedin.helpers({
 
+  chooseWcQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({userId: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({userId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    return ((a === undefined) && (i === undefined));
+  },
+
+  chooseCcQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({userId: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({userId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    return ((a != undefined) && (a.neighborhoodId === undefined) && (i === undefined));
+  },
+
+});
+
+Template.chooseccpane.helpers({
+
   neighborhoodsToShow() {
-    return Neighborhoods.find({});
-  },
-
-  userMetadata() {
-    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    w = Workplaces.find({_id: u.workplace}).fetch({})[0];
-    n = Neighborhoods.find({_id: u.neighborhood}).fetch({})[0];
-    return {_id: u._id, workplace: w.name, neighborhood: n.name}
-  },
-
-  needsWorkplace() {
-    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if ((u === undefined) || (u != undefined && u.workplace === undefined)) {
-      return true;
-    } else {
-      return u.workplace === '';
-    }
+    return Councils.find({type: "c"}).fetch({});
   }, 
 
-  needsNeighborhood() {
-    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if ((u === undefined) || (u != undefined && u.neighborhood === undefined)) {
-      return true;
-    } else {
-      return u.neighborhood === '';
-    }
-  },
-
-  hasWorkplaceAndNeighborhood() {
-    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    i = IterationMetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if (i.workplace != undefined && i.neighborhood != undefined && u.workplace === undefined && u.neighborhood === undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
-  didSubmitWorkplaceData() {
-    i = IterationMetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    u = Usermetadata.find({userId: Accounts.user()._id}).fetch({})[0];
-    if (u.workplace != undefined && u.neighborhood != undefined && i.hoursToWork != undefined && i.recipe != undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
 });
 
-Template.joinworkplacepane.helpers({
+Template.choosewcpane.helpers({
 
   workplacesToShow() {
-    return Workplaces.find({});
-  },
+    return Councils.find({type: "w"}).fetch({});
+  }, 
 
 });
 
-Template.joinneighborhoodpane.helpers({
-
-  neighborhoodsToShow() {
-    return Neighborhoods.find({});
-  },
-
-});
-
-Template.viewpaneloggedin.helpers({
-
-  workersToShow() {
-    w = Workplaces.find({}).fetch({});
-    m = Usermetadata.find({}).fetch({});
-    a = [];
-    for (let i = 0; i < w.length; i++) {
-      b = [];
-      for (let j = 0; j < m.length; j++) {
-        if (w[i]._id === m[j].workplace) {
-          b.push({email: Meteor.users.find({_id: m[j].userId}).fetch({})[0].emails[0].address});
-        }
-      }
-      a.push({workplace: w[i].name, workers: b});
-    }
-    return a;
-  },
-
-  neighborsToShow() {
-    n = Neighborhoods.find({}).fetch({});
-    m = Usermetadata.find({}).fetch({});
-    a = [];
-    for (let i = 0; i < n.length; i++) {
-      b = [];
-      for (let j = 0; j < m.length; j++) {
-        if (n[i]._id === m[j].neighborhood) {
-          b.push({email: Meteor.users.find({_id: m[j].userId}).fetch({})[0].emails[0].address});
-        }
-      }
-      a.push({neighborhood: n[i].name, neighbors: b});
-    }
-    return a;
-  }
-
-});
-
-Template.joinworkplacepane.events({
+Template.choosewcpane.events({
 
   'click .joinworkplace' (event) {
     event.preventDefault();
-    const target = event.target;
-    Usermetadata.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, workplace: target.value},}, {upsert: true});
+    const target = event.target.value.split("/");
+    Actors.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, workplaceId: target[0], workplace: target[1]},}, {upsert: true});
   }
 
 });
 
-Template.joinneighborhoodpane.events({
+Template.chooseccpane.events({
 
   'click .joinneighborhood' (event) {
     event.preventDefault();
-    const target = event.target;
-    Usermetadata.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, neighborhood: target.value},}, {upsert: true});
-  },
+    const target = event.target.value.split("/");
+    Actors.update(Accounts.user()._id, {$set: {userId: Accounts.user()._id, neighborhoodId: target[0], neighborhood: target[1]},}, {upsert: true});
+  }
 
 });
 
-Template.submititerationdatapane.events({
-
-  'submit form' (event) {
-// get current iteration
-
-    event.preventDefault();
-    htw = event.target.hoursToWork.value;
-    recipeToUse = event.target.recipe.value;
-    IterationMetadata.update(Accounts.user()._id, {$set: {iteration: 1, userId: Accounts.user()._id, hoursToWork: htw, recipe: recipeToUse},}, {upsert: true});
-
-  },
-
-});
-
-Template.submitccdatapane.events({
-
-  'submit form' (event) {
-// get current iteration
-
-    event.preventDefault();
-    p = event.target.pizza.value;
-    be = event.target.beer.value;
-    br = event.target.bread.value;
-    IterationMetadata.update(Accounts.user()._id, {$set: {iteration: 1, userId: Accounts.user()._id, pizza: p, beer: be, bread: br},}, {upsert: true});
-
-  },
-
-});

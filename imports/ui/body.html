@@ -33,26 +33,14 @@
 <b>Workplaces</b><br>
 <table>
 <tr>
-{{#each a in workersToShow}}
-  <td class="viewpanedetail"><b>{{a.workplace}}</b><br>
-    {{#each e in a.workers}}
-       {{e.email}}<br>
-    {{/each}}
-  </td>
-{{/each}}
+
 </tr>
 </table>
 <br><br>
 <b>Neighborhoods</b><br>
 <table>
 <tr>
-{{#each a in neighborsToShow}}
-  <td class="viewpanedetail"><b>{{a.neighborhood}}</b><br>
-    {{#each e in a.neighbors}}
-       {{e.email}}<br>
-    {{/each}}
-  </td>
-{{/each}}
+
 </tr>
 </table>
 </template>
@@ -113,30 +101,50 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
   Login or create an account to begin.
 </template>
 
-<template name="joinneighborhoodpane">
-Choose a neighborhood to join:
-<br><br>
-        {{#each a in neighborhoodsToShow}}
-            <button class="joinneighborhood" value="{{a._id}}">Join {{a.name}}
-            </button>
-            <br>
-        {{/each}}
+<template name="choosewcpane">
+  <b>Please choose a workplace to join</b>:
+  <br><br>
+  {{#each a in workplacesToShow}}
+    <button class="joinworkplace" value="{{a._id}}/{{a.name}}">{{a.name}}
+    </button>
+  {{/each}}
 </template>
 
-<template name="joinworkplacepane">
+<template name="chooseccpane">
+  <b>Please choose a neighborhood to join</b>:
+  <br><br>
+  {{#each a in neighborhoodsToShow}}
+    <button class="joinneighborhood" value="{{a._id}}/{{a.name}}">{{a.name}}
+    </button>
+  {{/each}}
+</template>
+
+
+
+<template name="choosecouncilspane">
+<form name="choosecouncilsform">
 Choose a workplace to join:
 <br><br>
         {{#each a in workplacesToShow}}
-            <button class="joinworkplace" value="{{a._id}}">Join {{a.name}}
-            </button>
+            <input type="radio" class="workplace" name="workplace" value="{{a._id}}" {{isChecked a._id}}>{{a.name}}
             <br>
         {{/each}}
+<br>
+Choose a neighborhood to join:
+<br><br>
+        {{#each a in neighborhoodsToShow}}
+            <input type="radio" class="neighborhood" name="neighborhood" value="{{a._id}}" {{isChecked a._id}}>{{a.name}}
+            <br>
+        {{/each}}
+<br>
+<input type="submit" value="SUBMIT">
+</form>
 </template>
 
-<template name="submititerationdatapane">
+<template name="enteriterationdatapane">
 <b>Workplace questions:</b>
 <br>
-<form name="hourstoworksubmitform">
+<form name="iterationdataform">
 How many hours do you want to work?<br>
 <input type="radio" name="hoursToWork" value="0">0
 <input type="radio" name="hoursToWork" value="1">1
@@ -155,16 +163,9 @@ Which recipe do you want to choose?<br>
 <input type="radio" name="recipe" value="A">High labor, low-resource<br>
 <input type="radio" name="recipe" value="B">Middling labor, middling resource<br>
 <input type="radio" name="recipe" value="C">Low labor, high-resource<br>
-<br>
-<input type="submit" value="SUBMIT">
-</form>
-
-</template>
-
-<template name="submitccdatapane">
+<br><br>
 <b>Neighborhood questions:</b>
 <br>
-<form name="consumptionsubmitform">
 How many pizzas do you want?<br>
 <input type="radio" name="pizza" value="0">0
 <input type="radio" name="pizza" value="1">1
@@ -209,27 +210,19 @@ How many loaves of bread do you want?<br>
 <br><br>
 <input type="submit" value="SUBMIT">
 </form>
+</template>
 
+<template name="iterationstatuspane">
+Iteration Status Pane - fill me!
 </template>
 
 <template name="editpaneloggedin">
   <br>
-  Your workplace: {{userMetadata.workplace}}
-  <br>
-  Your neighborhood: {{userMetadata.neighborhood}}
-  <br><br>
-  {{#if needsWorkplace}}
-    {{> joinworkplacepane}}
-    <br>
+  {{#if chooseWcQ}}
+    {{> choosewcpane}}
   {{/if}}
-  {{#if needsNeighborhood}}
-    {{> joinneighborhoodpane}}
-  {{/if}}
-  {{#if hasWorkplaceAndNeighborhood}}
-    {{> submititerationdatapane}}
-  {{/if}}
-  {{#if didSubmitWorkplaceData}}
-    {{> submitccdatapane}}
+  {{#if chooseCcQ}}
+    {{> chooseccpane}}
   {{/if}}
   <br>
 </template>
