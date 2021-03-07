@@ -31,6 +31,20 @@ Template.editpaneloggedin.helpers({
     return ((a != undefined) && (a.neighborhoodId != undefined) && (i === undefined));
   },
 
+  chooseRecipeQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe === undefined));
+  },
+
+  choosePizzaQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza === undefined));
+  },
+
 });
 
 Template.chooseccpane.helpers({
@@ -50,6 +64,18 @@ Template.choosewcpane.helpers({
 });
 
 Template.choosehourspane.helpers({
+
+  rangearray() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  },
+
+  n() {
+    return IterationCounter.find({}).fetch({})[0].iteration;
+  }
+
+});
+
+Template.choosepizzapane.helpers({
 
   rangearray() {
     return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -87,9 +113,32 @@ Template.choosehourspane.events({
   'click .hoursToWork' (event) {
     event.preventDefault();
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
     const target = event.target.value;
     IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, iteration: n, hoursToWork: target},}, {upsert: true});
+  }
+
+});
+
+Template.chooserecipepane.events({
+
+  'click .recipe' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const target = event.target.value;
+    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, recipe: target},}, {upsert: true});
+  }
+
+});
+
+Template.choosepizzapane.events({
+
+  'click .pizza' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const target = event.target.value;
+    IterationData.update(Accounts.user()._id, {$set: {actorId: Accounts.user()._id, actorEmail: email, iteration: n, pizza: target},}, {upsert: true});
   }
 
 });
