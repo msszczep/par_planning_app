@@ -30,19 +30,114 @@
 </body>
 
 <template name="viewpaneloggedin">
-<b>Workplaces</b><br>
 <table>
 <tr>
-
+<td class="bluestyle">Iteration: {{currentIteration}}</td>
+<td class="bluestyle">Pizza</td>
+<td class="bluestyle">Beer</td>
+<td class="bluestyle">Bread</td>
+<td class="bluestyle">Labor</td>
+<td class="bluestyle">Wheat</td>
+</tr>
+<tr>
+<td class="bluestyle">Prices</td>
+<td class="whitestyle">{{currentPrices.pizza}}</td>
+<td class="whitestyle">{{currentPrices.beer}}</td>
+<td class="whitestyle">{{currentPrices.bread}}</td>
+<td class="whitestyle">{{currentPrices.labor}}</td>
+<td class="whitestyle">{{currentPrices.wheat}}</td>
+</tr>
+<tr>
+<td class="bluestyle">Supply</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+</tr>
+<tr>
+<td class="bluestyle">Demand</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+</tr>
+<tr>
+<td class="bluestyle">Pct. diff</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
+<td class="whitestyle">x</td>
 </tr>
 </table>
 <br><br>
-<b>Neighborhoods</b><br>
 <table>
+<th class="whitestyle" colspan="3">
+Workplaces
+</th>
 <tr>
-
+<td class="{{bakerystyle}}">
+<b>Bakery</b><br>
+{{#each a in workersInBakery}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+SB/SC: {{bakeryRatio}} ({{bakerySb}} / {{bakerySc}})
+</td>
+<td class="{{brewerystyle}}">
+<b>Brewery</b><br>
+{{#each a in workersInBrewery}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
+</td>
+<td class="{{pizzeriastyle}}">
+<b>Pizzeria</b><br>
+{{#each a in workersInPizzeria}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
+</td>
 </tr>
 </table>
+<br>
+<table>
+<th class="bluestyle" colspan="3">
+Neighborhoods
+</th>
+<tr>
+<td class="{{goldmangreenstyle}}">
+<b>Goldman Green</b><br>
+{{#each a in goldmangreenmembers}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+Credit surplus: {{goldmangreensurplus}} ({{goldmangreencredit}} - {{goldmangreendebt}})
+</td>
+<td class="{{rockerhillstyle}}">
+<b>Rocker Hill</b><br>
+{{#each a in rockerhillmembers}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+Credit surplus: {{rockerhillsurplus}} ({{rockerhillcredit}} - {{rockerhilldebt}})
+</td><td class="{{bakuninbaystyle}}">
+<b>Bakunin Bay</b><br>
+{{#each a in bakuninbaymembers}}
+  <li>{{a.actorEmail}}</li><br>
+{{/each}}
+<br>
+SB: {{bakerySb}}<br>
+SC: {{bakerySc}}<br>
+SB/SC: {{bakeryRatio}}
+</td>
+</tr>
+</table>
+<br>
 </template>
 
 <template name="viewpaneinstructions">

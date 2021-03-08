@@ -68,6 +68,52 @@ Template.editpaneloggedin.helpers({
 
 });
 
+Template.viewpaneloggedin.helpers({
+
+  currentIteration() {
+    return IterationCounter.find({}).fetch({})[0].iteration;
+  },
+
+  workersInBakery() {
+    return Actors.find({workplace: "Bakery"}).fetch({});
+  },
+
+  bakerySb() {
+    return 4;
+  },
+
+  goldmangreenstyle() {
+    return "greenstyle";
+  },
+
+  rockerhillstyle() {
+    return "greenstyle";
+  },
+
+  bakuninbaystyle() {
+    return "greenstyle";
+  },
+
+  bakerystyle() {
+    return "greenstyle";
+  },
+
+  brewerystyle() {
+    return "greenstyle";
+  },
+
+  pizzeriastyle() {
+    return "greenstyle";
+  },
+
+  currentPrices() {
+    c = IterationCounter.find({}).fetch({})[0];
+    p = Prices.find({iteration: c.iteration}).fetch({})[0];
+    return p;
+  }
+
+});
+
 Template.chooseccpane.helpers({
 
   neighborhoodsToShow() {

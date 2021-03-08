@@ -16,3 +16,31 @@ td.viewpanedetail {
   padding: 5px;
   border: 2px solid;
 }
+
+td.bluestyle {
+  padding: 8px;
+  text-align: center;
+  background-color: #23238E;
+  color: white;
+  font-weight: bold;
+}
+
+td.whitestyle {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+td.greenstyle {
+  background-color: #cfc;
+  border: 1px solid green;
+  padding: 5px;
+  width: 200px;
+}
+
+td.redstyle {
+  background-color: #f78181;
+  border: 1px solid red;
+  padding: 5px;
+}
