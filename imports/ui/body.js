@@ -110,7 +110,29 @@ Template.viewpaneloggedin.helpers({
     c = IterationCounter.find({}).fetch({})[0];
     p = Prices.find({iteration: c.iteration}).fetch({})[0];
     return p;
-  }
+  },
+
+  demandData() {
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    iData = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({});
+    totalpizzademand = iData.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.pizza);
+    }, 0);
+    totalbeerdemand = iData.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.beer);
+    }, 0);
+    totalbreaddemand = iData.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.bread);
+    }, 0);
+    return {pizza: totalpizzademand, beer: totalbeerdemand, bread: totalbreaddemand};
+  },
+
+  supplyData() {
+    a = Actors.find({}).fetch({}).length;
+    totallaborsupply = a * 10;
+    totalwheatsupply = a * 12;
+    return {labor: totallaborsupply, wheat: totalwheatsupply};
+  },
 
 });
 

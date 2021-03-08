@@ -52,14 +52,14 @@
 <td class="whitestyle">x</td>
 <td class="whitestyle">x</td>
 <td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
+<td class="whitestyle">{{supplyData.labor}}</td>
+<td class="whitestyle">{{supplyData.wheat}}</td>
 </tr>
 <tr>
 <td class="bluestyle">Demand</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
+<td class="whitestyle">{{demandData.pizza}}</td>
+<td class="whitestyle">{{demandData.beer}}</td>
+<td class="whitestyle">{{demandData.bread}}</td>
 <td class="whitestyle">x</td>
 <td class="whitestyle">x</td>
 </tr>
@@ -131,9 +131,7 @@ Credit surplus: {{rockerhillsurplus}} ({{rockerhillcredit}} - {{rockerhilldebt}}
   <li>{{a.actorEmail}}</li><br>
 {{/each}}
 <br>
-SB: {{bakerySb}}<br>
-SC: {{bakerySc}}<br>
-SB/SC: {{bakeryRatio}}
+Credit surplus: {{bakuninbaysurplus}} ({{bakuninbaycredit}} - {{bakuninbaydebt}})
 </td>
 </tr>
 </table>
