@@ -49,11 +49,11 @@
 </tr>
 <tr>
 <td class="bluestyle">Supply</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">x</td>
-<td class="whitestyle">{{supplyData.labor}}</td>
-<td class="whitestyle">{{supplyData.wheat}}</td>
+<td class="whitestyle">{{supplyData.pizzasupply}}</td>
+<td class="whitestyle">{{supplyData.beersupply}}</td>
+<td class="whitestyle">{{supplyData.breadsupply}}</td>
+<td class="whitestyle">{{supplyData.laborsupply}}</td>
+<td class="whitestyle">{{supplyData.wheatsupply}}</td>
 </tr>
 <tr>
 <td class="bluestyle">Demand</td>
@@ -89,9 +89,8 @@ SB/SC: {{bakeryRatio}} ({{bakerySb}} / {{bakerySc}})
 <td class="{{brewerystyle}}">
 <b>Brewery</b><br>
 {{#each a in workersInBrewery}}
-  <li>{{a.actorEmail}}</li><br>
+  <li>{{a.actorEmail}}</li>
 {{/each}}
-<br>
 SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
 </td>
 <td class="{{pizzeriastyle}}">

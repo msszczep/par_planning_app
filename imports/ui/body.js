@@ -78,9 +78,17 @@ Template.viewpaneloggedin.helpers({
     return Actors.find({workplace: "Bakery"}).fetch({});
   },
 
-  bakerySb() {
-    return 4;
+  workersInBrewery() {
+    return Actors.find({workplace: "Brewery"}).fetch({});
   },
+
+  workersInPizzeria() {
+    return Actors.find({workplace: "Pizzeria"}).fetch({});
+  },
+
+//  bakerySb() {
+//    return 4;
+//  },
 
   goldmangreenstyle() {
     return "greenstyle";
@@ -128,10 +136,62 @@ Template.viewpaneloggedin.helpers({
   },
 
   supplyData() {
+    const laborConvert = {"bread": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "beer": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "pizza": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
+    const wheatConvert = {"bread": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "beer": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "pizza": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
     a = Actors.find({}).fetch({}).length;
+    frequencyfunction = function (acc, iterationdatum) {
+      if (acc[iterationdatum.recipe] === undefined) {
+        acc[iterationdatum.recipe] = 1;
+      } else {
+        acc[iterationdatum.recipe] += 1;
+      }
+      return acc;
+    };
+    sortingfunction = function (a, b) { return a[1] + b[1] };
+    c = IterationCounter.find({}).fetch({})[0];
+    pizzadata = IterationData.find({iteration: c.iteration, workplace: "Pizzeria"}).fetch({});
+    beerdata = IterationData.find({iteration: c.iteration, workplace: "Brewery"}).fetch({});
+    breaddata = IterationData.find({iteration: c.iteration, workplace: "Bakery"}).fetch({});
+    pizzahours = pizzadata.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.hoursToWork);
+    }, 0);
+    breadhours = breaddata.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.hoursToWork);
+    }, 0);
+    beerhours = beerdata.reduce(function (accumulator, iterationdatum) {
+      return accumulator + Number(iterationdatum.hoursToWork);
+    }, 0);
+    pizzarecipes = pizzadata.reduce(frequencyfunction, {});
+    breadrecipes = breaddata.reduce(frequencyfunction, {});
+    beerrecipes = beerdata.reduce(frequencyfunction, {});
+    pizzasortable = [];
+    beersortable = [];
+    breadsortable = [];
+    for (i in pizzarecipes) {
+      pizzasortable.push([i, pizzarecipes[i]])
+    };
+    for (i in breadrecipes) {
+      breadsortable.push([i, breadrecipes[i]])
+    };
+    for (i in beerrecipes) {
+      beersortable.push([i, beerrecipes[i]])
+    };
+    breadsortable.sort(sortingfunction);
+    beersortable.sort(sortingfunction);
+    pizzasortable.sort(sortingfunction);
+    winningpizzarecipe = pizzasortable.length === 0 ? '' : pizzasortable[0][0];
+    winningbreadrecipe = breadsortable.length === 0 ? '' : breadsortable[0][0];
+    winningbeerrecipe = beersortable.length === 0 ? '' : beersortable[0][0];
+    breadsupplyr = Math.round(breadhours * 1000 / laborConvert["bread"][winningbreadrecipe]) / 1000;
+    pizzasupplyr = Math.round(pizzahours * 1000 / laborConvert["pizza"][winningpizzarecipe]) / 1000;
+    beersupplyr = Math.round(beerhours * 1000 / laborConvert["beer"][winningbeerrecipe]) / 1000;
     totallaborsupply = a * 10;
     totalwheatsupply = a * 12;
-    return {labor: totallaborsupply, wheat: totalwheatsupply};
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr};
   },
 
 });
@@ -140,7 +200,7 @@ Template.chooseccpane.helpers({
 
   neighborhoodsToShow() {
     return Councils.find({type: "c"}).fetch({});
-  }, 
+  },
 
 });
 
@@ -239,10 +299,11 @@ Template.choosehourspane.events({
 
   'click .hoursToWork' (event) {
     event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
     const target = event.target.value;
     const email = Accounts.user().emails[0].address;
-    IterationData.insert({actorId: Accounts.user()._id, iteration: n, hoursToWork: target, actorEmail: email});
+    IterationData.insert({actorId: Accounts.user()._id, iteration: n, hoursToWork: target, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
   }
 
 });
