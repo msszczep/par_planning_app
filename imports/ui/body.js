@@ -120,9 +120,9 @@ Template.viewpaneloggedin.helpers({
     return p;
   },
 
-  demandData() {
+  supplyDemandData() {
     c = IterationCounter.find({}).fetch({})[0].iteration;
-    iData = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({});
+    iData = IterationData.find({iteration: c}).fetch({});
     totalpizzademand = iData.reduce(function (accumulator, iterationdatum) {
       return accumulator + Number(iterationdatum.pizza);
     }, 0);
@@ -132,10 +132,7 @@ Template.viewpaneloggedin.helpers({
     totalbreaddemand = iData.reduce(function (accumulator, iterationdatum) {
       return accumulator + Number(iterationdatum.bread);
     }, 0);
-    return {pizza: totalpizzademand, beer: totalbeerdemand, bread: totalbreaddemand};
-  },
 
-  supplyData() {
     const laborConvert = {"bread": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
                           "beer": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
                           "pizza": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
@@ -152,10 +149,10 @@ Template.viewpaneloggedin.helpers({
       return acc;
     };
     sortingfunction = function (a, b) { return a[1] + b[1] };
-    c = IterationCounter.find({}).fetch({})[0];
-    pizzadata = IterationData.find({iteration: c.iteration, workplace: "Pizzeria"}).fetch({});
-    beerdata = IterationData.find({iteration: c.iteration, workplace: "Brewery"}).fetch({});
-    breaddata = IterationData.find({iteration: c.iteration, workplace: "Bakery"}).fetch({});
+    pctdiff = function (a, b) { return Math.round(Math.abs(a - b) / ((a + b) / 2) * 100 * 1000) / 1000 }
+    pizzadata = IterationData.find({iteration: c, workplace: "Pizzeria"}).fetch({});
+    beerdata = IterationData.find({iteration: c, workplace: "Brewery"}).fetch({});
+    breaddata = IterationData.find({iteration: c, workplace: "Bakery"}).fetch({});
     pizzahours = pizzadata.reduce(function (accumulator, iterationdatum) {
       return accumulator + Number(iterationdatum.hoursToWork);
     }, 0);
@@ -191,7 +188,8 @@ Template.viewpaneloggedin.helpers({
     beersupplyr = Math.round(beerhours * 1000 / laborConvert["beer"][winningbeerrecipe]) / 1000;
     totallaborsupply = a * 10;
     totalwheatsupply = a * 12;
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr};
+    wheatdemandr = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]) + (beersupplyr * wheatConvert["beer"][winningbeerrecipe]) + (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr)};
   },
 
 });
