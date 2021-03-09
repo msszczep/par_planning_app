@@ -102,10 +102,6 @@ Template.viewpaneloggedin.helpers({
     return "greenstyle";
   },
 
-  rockerhillstyle() {
-    return "greenstyle";
-  },
-
   bakuninbaystyle() {
     return "greenstyle";
   },
@@ -146,9 +142,11 @@ Template.viewpaneloggedin.helpers({
     };
     sortingfunction = function (a, b) { return a[1] + b[1] };
     pctdiff = function (a, b) { return Math.round(Math.abs(a - b) / ((a + b) / 2) * 100 * 1000) / 1000 }
+
     pizzadata = IterationData.find({iteration: c, workplace: "Pizzeria"}).fetch({});
     beerdata = IterationData.find({iteration: c, workplace: "Brewery"}).fetch({});
     breaddata = IterationData.find({iteration: c, workplace: "Bakery"}).fetch({});
+
     pizzahours = pizzadata.reduce(function (accumulator, iterationdatum) {
       return accumulator + Number(iterationdatum.hoursToWork);
     }, 0);
@@ -158,12 +156,15 @@ Template.viewpaneloggedin.helpers({
     beerhours = beerdata.reduce(function (accumulator, iterationdatum) {
       return accumulator + Number(iterationdatum.hoursToWork);
     }, 0);
+
     pizzarecipes = pizzadata.reduce(frequencyfunction, {});
     breadrecipes = breaddata.reduce(frequencyfunction, {});
     beerrecipes = beerdata.reduce(frequencyfunction, {});
+
     pizzasortable = [];
     beersortable = [];
     breadsortable = [];
+
     for (i in pizzarecipes) {
       pizzasortable.push([i, pizzarecipes[i]])
     };
@@ -173,9 +174,11 @@ Template.viewpaneloggedin.helpers({
     for (i in beerrecipes) {
       beersortable.push([i, beerrecipes[i]])
     };
+
     breadsortable.sort(sortingfunction);
     beersortable.sort(sortingfunction);
     pizzasortable.sort(sortingfunction);
+
     winningpizzarecipe = pizzasortable.length === 0 ? '' : pizzasortable[0][0];
     winningbreadrecipe = breadsortable.length === 0 ? '' : breadsortable[0][0];
     winningbeerrecipe = beersortable.length === 0 ? '' : beersortable[0][0];
@@ -190,6 +193,7 @@ Template.viewpaneloggedin.helpers({
     beerwheatdemand = (beersupplyr * wheatConvert["beer"][winningbeerrecipe]);
     breadwheatdemand = (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
     wheatdemandr = pizzawheatdemand + beerwheatdemand + breadwheatdemand;
+
     p = Prices.find({iteration: c}).fetch({})[0];
 
     brewerysbr = (beersupplyr * p.beer * 1000) / 1000;
@@ -208,9 +212,17 @@ Template.viewpaneloggedin.helpers({
     brewerycss = breweryratior <= 1 ? "redstyle" : "greenstyle";
     pizzeriacss = pizzeriaratior <= 1 ? "redstyle" : "greenstyle";
 
+    rockerhilldata = IterationData.find({iteration: c, neighborhood: "Rocker Hill"}).fetch({});
+    rockerhillcreditr = rockerhilldata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.hoursToWork) * 15);
+    }, 0);
+    rockerhilldebitr = rockerhilldata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.pizza) * p.pizza) + (Number(iterationdatum.bread) * p.bread) + (Number(iterationdatum.beer) * p.beer);
+    }, 0);
+    rockerhillsurplusr = rockerhillcreditr - rockerhilldebitr;
+    rockerhillcss =  rockerhillsurplusr >= 0 ? "greenstyle" : "redstyle";
 
-
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss};
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr, rockerhilldebt: rockerhilldebitr, rockerhillsurplus: rockerhillsurplusr, rockerhillstyle: rockerhillcss};
   },
 
 });
