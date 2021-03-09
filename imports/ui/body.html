@@ -84,14 +84,14 @@ Workplaces
   <li>{{a.actorEmail}}</li><br>
 {{/each}}
 <br>
-SB/SC: {{bakeryRatio}} ({{bakerySb}} / {{bakerySc}})
+SB/SC: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{supplyDemandData.bakerySc}})
 </td>
 <td class="{{brewerystyle}}">
 <b>Brewery</b><br>
 {{#each a in workersInBrewery}}
   <li>{{a.actorEmail}}</li>
 {{/each}}
-SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
+SB/SC: {{supplyDemandData.breweryRatio}} ({{supplyDemandData.brewerySb}} / {{supplyDemandData.brewerySc}})
 </td>
 <td class="{{pizzeriastyle}}">
 <b>Pizzeria</b><br>
@@ -99,7 +99,7 @@ SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
   <li>{{a.actorEmail}}</li><br>
 {{/each}}
 <br>
-SB/SC: {{breweryRatio}} ({{brewerySb}} / {{brewerySc}})
+SB/SC: {{supplyDemandData.pizzeriaRatio}} ({{supplyDemandData.pizzeriaSb}} / {{supplyDemandData.pizzeriaSc}})
 </td>
 </tr>
 </table>

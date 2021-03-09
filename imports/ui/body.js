@@ -86,9 +86,17 @@ Template.viewpaneloggedin.helpers({
     return Actors.find({workplace: "Pizzeria"}).fetch({});
   },
 
-//  bakerySb() {
-//    return 4;
-//  },
+  rockerhillmembers() {
+    return Actors.find({neighborhood: "Rocker Hill"}).fetch({});
+  },
+
+  goldmangreenmembers() {
+    return Actors.find({neighborhood: "Goldman Green"}).fetch({});
+  },
+
+  bakuninbaymembers() {
+    return Actors.find({neighborhood: "Bakunin Bay"}).fetch({});
+  },
 
   goldmangreenstyle() {
     return "greenstyle";
@@ -183,13 +191,32 @@ Template.viewpaneloggedin.helpers({
     winningpizzarecipe = pizzasortable.length === 0 ? '' : pizzasortable[0][0];
     winningbreadrecipe = breadsortable.length === 0 ? '' : breadsortable[0][0];
     winningbeerrecipe = beersortable.length === 0 ? '' : beersortable[0][0];
+
     breadsupplyr = Math.round(breadhours * 1000 / laborConvert["bread"][winningbreadrecipe]) / 1000;
     pizzasupplyr = Math.round(pizzahours * 1000 / laborConvert["pizza"][winningpizzarecipe]) / 1000;
     beersupplyr = Math.round(beerhours * 1000 / laborConvert["beer"][winningbeerrecipe]) / 1000;
     totallaborsupply = a * 10;
     totalwheatsupply = a * 12;
-    wheatdemandr = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]) + (beersupplyr * wheatConvert["beer"][winningbeerrecipe]) + (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr)};
+
+    pizzawheatdemand = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]);
+    beerwheatdemand = (beersupplyr * wheatConvert["beer"][winningbeerrecipe]);
+    breadwheatdemand = (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
+    wheatdemandr = pizzawheatdemand + beerwheatdemand + breadwheatdemand;
+    p = Prices.find({iteration: c}).fetch({})[0];
+
+    brewerysbr = (beersupplyr * p.beer * 1000) / 1000;
+    bakerysbr = (breadsupplyr * p.bread * 1000) / 1000;
+    pizzeriasbr = (pizzasupplyr * p.pizza * 1000) / 1000;
+
+    pizzeriascr = (1000 * ((pizzahours * p.pizza) + (pizzawheatdemand * p.wheat)) / 1000);
+    bakeryscr = (1000 * ((breadhours * p.bread) + (breadwheatdemand * p.wheat)) / 1000);
+    breweryscr = (1000 * ((beerhours * p.beer) + (beerwheatdemand * p.wheat)) / 1000);
+
+    bakeryratior = (1000 * bakerysbr) / (bakeryscr * 1000);
+    breweryratior = (1000 * brewerysbr) / (breweryscr * 1000);
+    pizzeriaratior = (1000 * pizzeriasbr) / (pizzeriascr * 1000);
+
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior};
   },
 
 });
