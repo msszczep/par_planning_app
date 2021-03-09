@@ -110,18 +110,6 @@ Template.viewpaneloggedin.helpers({
     return "greenstyle";
   },
 
-  bakerystyle() {
-    return "greenstyle";
-  },
-
-  brewerystyle() {
-    return "greenstyle";
-  },
-
-  pizzeriastyle() {
-    return "greenstyle";
-  },
-
   currentPrices() {
     c = IterationCounter.find({}).fetch({})[0];
     p = Prices.find({iteration: c.iteration}).fetch({})[0];
@@ -216,7 +204,13 @@ Template.viewpaneloggedin.helpers({
     breweryratior = (1000 * brewerysbr) / (breweryscr * 1000);
     pizzeriaratior = (1000 * pizzeriasbr) / (pizzeriascr * 1000);
 
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior};
+    bakerycss = bakeryratior <= 1 ? "redstyle" : "greenstyle";
+    brewerycss = breweryratior <= 1 ? "redstyle" : "greenstyle";
+    pizzeriacss = pizzeriaratior <= 1 ? "redstyle" : "greenstyle";
+
+
+
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss};
   },
 
 });
