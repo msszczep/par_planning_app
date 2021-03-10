@@ -222,7 +222,27 @@ Template.viewpaneloggedin.helpers({
     rockerhillsurplusr = rockerhillcreditr - rockerhilldebitr;
     rockerhillcss =  rockerhillsurplusr >= 0 ? "greenstyle" : "redstyle";
 
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr, rockerhilldebt: rockerhilldebitr, rockerhillsurplus: rockerhillsurplusr, rockerhillstyle: rockerhillcss};
+    goldmangreendata = IterationData.find({iteration: c, neighborhood: "Goldman Green"}).fetch({});
+    goldmangreencreditr = goldmangreendata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.hoursToWork) * 15);
+    }, 0);
+    goldmangreendebitr = goldmangreendata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.pizza) * p.pizza) + (Number(iterationdatum.bread) * p.bread) + (Number(iterationdatum.beer) * p.beer);
+    }, 0);
+    goldmangreensurplusr = goldmangreencreditr - goldmangreendebitr;
+    goldmangreencss =  goldmangreensurplusr >= 0 ? "greenstyle" : "redstyle";
+
+    bakuninbaydata = IterationData.find({iteration: c, neighborhood: "Bakunin Bay"}).fetch({});
+    bakuninbaycreditr = bakuninbaydata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.hoursToWork) * 15);
+    }, 0);
+    bakuninbaydebitr = bakuninbaydata.reduce(function (acc, iterationdatum) {
+      return acc + (Number(iterationdatum.pizza) * p.pizza) + (Number(iterationdatum.bread) * p.bread) + (Number(iterationdatum.beer) * p.beer);
+    }, 0);
+    bakuninbaysurplusr = bakuninbaycreditr - bakuninbaydebitr;
+    bakuninbaycss =  bakuninbaysurplusr >= 0 ? "greenstyle" : "redstyle";
+
+    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr, rockerhilldebt: rockerhilldebitr, rockerhillsurplus: rockerhillsurplusr, rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr, bakuninbaydebt: bakuninbaydebitr, bakuninbaysurplus: bakuninbaysurplusr, bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr, goldmangreendebt: goldmangreendebitr, goldmangreensurplus: goldmangreensurplusr, goldmangreenstyle: goldmangreencss};
   },
 
 });
