@@ -263,6 +263,25 @@ Template.choosewcpane.helpers({
 
 });
 
+Template.chooserecipepane.helpers({
+
+  data() {
+    const laborConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "Pizzeria": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
+    n = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    cs = Number(i.hoursToWork) * 15;
+    p = Prices.find({iteration: n}).fetch({})[0];
+    supplyA = Number(i.hoursToWork) / laborConvert[i.workplace]["A"];
+    supplyB = Number(i.hoursToWork) / laborConvert[i.workplace]["B"];
+    supplyC = Number(i.hoursToWork) / laborConvert[i.workplace]["C"];
+//    sbA = supplyA;
+    return {n: n, hoursToWork: i.hoursToWork, credits: cs, supplyA: supplyA.toFixed(2), supplyB: supplyB.toFixed(2), supplyC: supplyC.toFixed(2)};
+  }
+
+});
+
 Template.choosehourspane.helpers({
 
   rangearray() {
@@ -518,7 +537,7 @@ Template.resetpane.events({
     const newincrement = c + 1;
     IterationCounter.update(ic._id, {$set: {iteration: newincrement}});
 
-    Prices.insert({iteration: newincrement, pizza: newpizzaprice, beer: newbeerprice, bread: newbreadprice, wheat: newwheatprice, labor: p.labor});
+    Prices.insert({iteration: newincrement, pizza: newpizzaprice.toFixed(2), beer: newbeerprice.toFixed(2), bread: newbreadprice.toFixed(2), wheat: newwheatprice.toFixed(2), labor: p.labor.toFixed(2)});
   }
 
 });

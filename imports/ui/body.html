@@ -81,7 +81,7 @@ Workplaces
 <td class="{{supplyDemandData.bakerystyle}}">
 <b>Bakery</b><br>
 {{#each a in workersInBakery}}
-  <li>{{a.actorEmail}}</li><br>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 <br>
 SB/SC: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{supplyDemandData.bakerySc}})
@@ -89,14 +89,14 @@ SB/SC: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{suppl
 <td class="{{supplyDemandData.brewerystyle}}">
 <b>Brewery</b><br>
 {{#each a in workersInBrewery}}
-  <li>{{a.actorEmail}}</li>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 SB/SC: {{supplyDemandData.breweryRatio}} ({{supplyDemandData.brewerySb}} / {{supplyDemandData.brewerySc}})
 </td>
 <td class="{{supplyDemandData.pizzeriastyle}}">
 <b>Pizzeria</b><br>
 {{#each a in workersInPizzeria}}
-  <li>{{a.actorEmail}}</li><br>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 <br>
 SB/SC: {{supplyDemandData.pizzeriaRatio}} ({{supplyDemandData.pizzeriaSb}} / {{supplyDemandData.pizzeriaSc}})
@@ -112,7 +112,7 @@ Neighborhoods
 <td class="{{supplyDemandData.goldmangreenstyle}}">
 <b>Goldman Green</b><br>
 {{#each a in goldmangreenmembers}}
-  <li>{{a.actorEmail}}</li><br>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 <br>
 Credit surplus: {{supplyDemandData.goldmangreensurplus}} ({{supplyDemandData.goldmangreencredit}} - {{supplyDemandData.goldmangreendebt}})
@@ -120,14 +120,14 @@ Credit surplus: {{supplyDemandData.goldmangreensurplus}} ({{supplyDemandData.gol
 <td class="{{supplyDemandData.rockerhillstyle}}">
 <b>Rocker Hill</b><br>
 {{#each a in rockerhillmembers}}
-  <li>{{a.actorEmail}}</li><br>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 <br>
 Credit surplus: {{supplyDemandData.rockerhillsurplus}} ({{supplyDemandData.rockerhillcredit}} - {{supplyDemandData.rockerhilldebt}})
 </td><td class="{{supplyDemandData.bakuninbaystyle}}">
 <b>Bakunin Bay</b><br>
 {{#each a in bakuninbaymembers}}
-  <li>{{a.actorEmail}}</li><br>
+&middot; {{a.actorEmail}}<br>
 {{/each}}
 <br>
 Credit surplus: {{supplyDemandData.bakuninbaysurplus}} ({{supplyDemandData.bakuninbaycredit}} - {{supplyDemandData.bakuninbaydebt}})
@@ -212,21 +212,30 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
 </template>
 
 <template name="choosehourspane">
-  <b>For your workplace, in iteration {{n}}, how many hours do you wish to work?</b>
+  <b>For your workplace, how many hours do you wish to work?</b>
   <br><br>
   {{#each a in rangearray}}
     <button class="hoursToWork" value="{{a}}">{{a}}
     </button>
   {{/each}}
+<hr>
+<br>
+Iteration: {{n}}
 </template>
 
 <template name="chooserecipepane">
-  <b>For your workplace, in iteration {{n}}, which recipe do you choose?</b>
-  <br><br>
-  <button class="recipe" value="A">High labor, low-resource</button><br><br>
-  <button class="recipe" value="B">Middle labor, middle resource</button><br><br>
-  <button class="recipe" value="C">Low labor, high-resource</button><br>
 
+  <table border="2">
+  <tr><td><b>Which recipe do you choose?</b></td><td>Supply</td><td>SB/SC</td></tr>
+  <tr><td><button class="recipe" value="A">High labor, low-resource</button></td><td>{{data.supplyA}}</td><td>X</td></tr>
+  <tr><td><button class="recipe" value="B">Middle labor, middle resource</button></td><td>{{data.supplyB}}</td><td></td></tr>
+  <tr><td><button class="recipe" value="C">Low labor, high-resource</button></td><td>{{data.supplyC}}</td><td></td></tr>
+  </table>
+<hr>
+<br>
+Iteration: {{data.n}}<br>
+Hours to work: {{data.hoursToWork}}<BR>
+Credits: {{data.credits}}
 </template>
 
 <template name="choosepizzapane">
@@ -236,6 +245,12 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
     <button class="pizza" value="{{a}}">{{a}}
     </button>
   {{/each}}
+<br><br>
+<hr>
+<br>
+Iteration: {{n}}<br>
+Hours to work: {{hoursToWork}}<BR>
+Credits: {{credits}}
 </template>
 
 <template name="choosebeerpane">
