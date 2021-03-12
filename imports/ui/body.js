@@ -98,18 +98,10 @@ Template.viewpaneloggedin.helpers({
     return Actors.find({neighborhood: "Bakunin Bay"}).fetch({});
   },
 
-  goldmangreenstyle() {
-    return "greenstyle";
-  },
-
-  bakuninbaystyle() {
-    return "greenstyle";
-  },
-
   currentPrices() {
     c = IterationCounter.find({}).fetch({})[0];
     p = Prices.find({iteration: c.iteration}).fetch({})[0];
-    return p;
+    return {pizza: p.pizza.toFixed(2), beer: p.beer.toFixed(2), bread: p.bread.toFixed(2), labor: p.labor.toFixed(2), wheat: p.wheat.toFixed(2)};
   },
 
   supplyDemandData() {
@@ -141,7 +133,7 @@ Template.viewpaneloggedin.helpers({
       return acc;
     };
     sortingfunction = function (a, b) { return a[1] + b[1] };
-    pctdiff = function (a, b) { return Math.round(Math.abs(a - b) / ((a + b) / 2) * 100 * 1000) / 1000 }
+    pctdiff = function (a, b) { return Math.abs(a - b) * 100 / (a + b); }
 
     pizzadata = IterationData.find({iteration: c, workplace: "Pizzeria"}).fetch({});
     beerdata = IterationData.find({iteration: c, workplace: "Brewery"}).fetch({});
@@ -183,9 +175,9 @@ Template.viewpaneloggedin.helpers({
     winningbreadrecipe = breadsortable.length === 0 ? '' : breadsortable[0][0];
     winningbeerrecipe = beersortable.length === 0 ? '' : beersortable[0][0];
 
-    breadsupplyr = Math.round(breadhours * 1000 / laborConvert["bread"][winningbreadrecipe]) / 1000;
-    pizzasupplyr = Math.round(pizzahours * 1000 / laborConvert["pizza"][winningpizzarecipe]) / 1000;
-    beersupplyr = Math.round(beerhours * 1000 / laborConvert["beer"][winningbeerrecipe]) / 1000;
+    breadsupplyr = breadhours / laborConvert["bread"][winningbreadrecipe];
+    pizzasupplyr = pizzahours / laborConvert["pizza"][winningpizzarecipe];
+    beersupplyr = beerhours / laborConvert["beer"][winningbeerrecipe];
     totallaborsupply = a * 10;
     totalwheatsupply = a * 12;
 
@@ -196,17 +188,17 @@ Template.viewpaneloggedin.helpers({
 
     p = Prices.find({iteration: c}).fetch({})[0];
 
-    brewerysbr = (beersupplyr * p.beer * 1000) / 1000;
-    bakerysbr = (breadsupplyr * p.bread * 1000) / 1000;
-    pizzeriasbr = (pizzasupplyr * p.pizza * 1000) / 1000;
+    brewerysbr = beersupplyr * p.beer;
+    bakerysbr = breadsupplyr * p.bread;
+    pizzeriasbr = pizzasupplyr * p.pizza;
 
-    pizzeriascr = (1000 * ((pizzahours * p.pizza) + (pizzawheatdemand * p.wheat)) / 1000);
-    bakeryscr = (1000 * ((breadhours * p.bread) + (breadwheatdemand * p.wheat)) / 1000);
-    breweryscr = (1000 * ((beerhours * p.beer) + (beerwheatdemand * p.wheat)) / 1000);
+    pizzeriascr = (pizzahours * p.pizza) + (pizzawheatdemand * p.wheat);
+    bakeryscr = (breadhours * p.bread) + (breadwheatdemand * p.wheat);
+    breweryscr = (beerhours * p.beer) + (beerwheatdemand * p.wheat);
 
-    bakeryratior = (1000 * bakerysbr) / (bakeryscr * 1000);
-    breweryratior = (1000 * brewerysbr) / (breweryscr * 1000);
-    pizzeriaratior = (1000 * pizzeriasbr) / (pizzeriascr * 1000);
+    bakeryratior = bakerysbr / bakeryscr;
+    breweryratior = brewerysbr / breweryscr;
+    pizzeriaratior = pizzeriasbr / pizzeriascr;
 
     bakerycss = bakeryratior <= 1 ? "redstyle" : "greenstyle";
     brewerycss = breweryratior <= 1 ? "redstyle" : "greenstyle";
@@ -242,7 +234,8 @@ Template.viewpaneloggedin.helpers({
     bakuninbaysurplusr = bakuninbaycreditr - bakuninbaydebitr;
     bakuninbaycss =  bakuninbaysurplusr >= 0 ? "greenstyle" : "redstyle";
 
-    return {laborsupply: totallaborsupply, wheatsupply: totalwheatsupply, breadsupply: breadsupplyr, pizzasupply: pizzasupplyr, beersupply: beersupplyr, wheatdemand: wheatdemandr, pizzademand: totalpizzademand, beerdemand: totalbeerdemand, breaddemand: totalbreaddemand, pdpizza: pctdiff(pizzasupplyr, totalpizzademand), pdbread: pctdiff(breadsupplyr, totalbreaddemand), pdbeer: pctdiff(beersupplyr, totalbeerdemand), pdwheat: pctdiff(totalwheatsupply, wheatdemandr), pizzeriaSb: pizzeriasbr, brewerySb: brewerysbr, bakerySb: bakerysbr, pizzeriaSc: pizzeriascr, bakerySc: bakeryscr, bakeryRatio: bakeryratior, brewerySc: breweryscr, breweryRatio: breweryratior, pizzeriaRatio: pizzeriaratior, bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr, rockerhilldebt: rockerhilldebitr, rockerhillsurplus: rockerhillsurplusr, rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr, bakuninbaydebt: bakuninbaydebitr, bakuninbaysurplus: bakuninbaysurplusr, bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr, goldmangreendebt: goldmangreendebitr, goldmangreensurplus: goldmangreensurplusr, goldmangreenstyle: goldmangreencss};
+  return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss};
+
   },
 
 });
@@ -269,6 +262,9 @@ Template.chooserecipepane.helpers({
     const laborConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
                           "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
                           "Pizzeria": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
+    const wheatConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "Pizzeria": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
     n = IterationCounter.find({}).fetch({})[0].iteration;
     i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     cs = Number(i.hoursToWork) * 15;
@@ -276,8 +272,38 @@ Template.chooserecipepane.helpers({
     supplyA = Number(i.hoursToWork) / laborConvert[i.workplace]["A"];
     supplyB = Number(i.hoursToWork) / laborConvert[i.workplace]["B"];
     supplyC = Number(i.hoursToWork) / laborConvert[i.workplace]["C"];
-//    sbA = supplyA;
-    return {n: n, hoursToWork: i.hoursToWork, credits: cs, supplyA: supplyA.toFixed(2), supplyB: supplyB.toFixed(2), supplyC: supplyC.toFixed(2)};
+    console.log(supplyA);
+    console.log(supplyB);
+    console.log(supplyC);
+    wheatDemandA = supplyA * wheatConvert[i.workplace]["A"];
+    wheatDemandB = supplyB * wheatConvert[i.workplace]["B"];
+    wheatDemandC = supplyC * wheatConvert[i.workplace]["C"];
+    console.log(wheatDemandA);
+    console.log(wheatDemandB);
+    console.log(wheatDemandC);
+    if (i.workplace == "Bakery") {
+      priceToUse = p.bread;
+    } else if (i.workplace == "Brewery") {
+      priceToUse = p.beer;
+    } else if (i.workplace == "Pizzeria") {
+      priceToUse = p.pizza;
+    }
+    sbA = supplyA * priceToUse;
+    sbB = supplyB * priceToUse;
+    sbC = supplyC * priceToUse;
+    console.log(sbA);
+    console.log(sbB);
+    console.log(sbC);
+    scA = (Number(i.hoursToWork) * p.labor) + (wheatDemandA * priceToUse);
+    scB = (Number(i.hoursToWork) * p.labor) + (wheatDemandB * priceToUse);
+    scC = (Number(i.hoursToWork) * p.labor) + (wheatDemandC * priceToUse);
+    console.log(scA);
+    console.log(scB);
+    console.log(scC);
+    sbscA = sbA / scA;
+    sbscB = sbB / scB;
+    sbscC = sbC / scC;
+    return {n: n, hoursToWork: i.hoursToWork, credits: cs, supplyA: supplyA.toFixed(2), supplyB: supplyB.toFixed(2), supplyC: supplyC.toFixed(2), ratioA: sbscA.toFixed(2), ratioB: sbscB.toFixed(2), ratioC: sbscC.toFixed(2)};
   }
 
 });
@@ -516,9 +542,9 @@ Template.resetpane.events({
     winningbreadrecipe = breadsortable.length === 0 ? '' : breadsortable[0][0];
     winningbeerrecipe = beersortable.length === 0 ? '' : beersortable[0][0];
 
-    breadsupplyr = Math.round(breadhours * 1000 / laborConvert["bread"][winningbreadrecipe]) / 1000;
-    pizzasupplyr = Math.round(pizzahours * 1000 / laborConvert["pizza"][winningpizzarecipe]) / 1000;
-    beersupplyr = Math.round(beerhours * 1000 / laborConvert["beer"][winningbeerrecipe]) / 1000;
+    breadsupplyr = breadhours / laborConvert["bread"][winningbreadrecipe];
+    pizzasupplyr = pizzahours / laborConvert["pizza"][winningpizzarecipe];
+    beersupplyr = beerhours / laborConvert["beer"][winningbeerrecipe];
     totallaborsupply = a * 10;
     totalwheatsupply = a * 12;
 
@@ -537,7 +563,7 @@ Template.resetpane.events({
     const newincrement = c + 1;
     IterationCounter.update(ic._id, {$set: {iteration: newincrement}});
 
-    Prices.insert({iteration: newincrement, pizza: newpizzaprice.toFixed(2), beer: newbeerprice.toFixed(2), bread: newbreadprice.toFixed(2), wheat: newwheatprice.toFixed(2), labor: p.labor.toFixed(2)});
+    Prices.insert({iteration: newincrement, pizza: newpizzaprice, beer: newbeerprice, bread: newbreadprice, wheat: newwheatprice, labor: p.labor});
   }
 
 });
