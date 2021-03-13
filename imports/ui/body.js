@@ -192,6 +192,11 @@ Template.viewpaneloggedin.helpers({
     breadwheatdemand = (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
     wheatdemandr = pizzawheatdemand + beerwheatdemand + breadwheatdemand;
 
+    pizzalabordemand = totalpizzademand * laborConvert["pizza"][winningbreadrecipe];
+    breadlabordemand = totalbreaddemand * laborConvert["bread"][winningbreadrecipe];
+    beerlabordemand = totalbeerdemand * laborConvert["beer"][winningbreadrecipe];
+    totallabordemand = pizzalabordemand + breadlabordemand + beerlabordemand;
+
     p = Prices.find({iteration: c}).fetch({})[0];
 
     brewerysbr = beersupplyr * p.beer;
@@ -240,7 +245,13 @@ Template.viewpaneloggedin.helpers({
     bakuninbaysurplusr = bakuninbaycreditr - bakuninbaydebitr;
     bakuninbaycss =  bakuninbaysurplusr >= 0 ? "greenstyle" : "redstyle";
 
-  return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss};
+    ispizzaenough = pizzasupplyr >= totalpizzademand;
+    isbeerenough = beersupplyr >= totalbeerdemand;
+    isbreadenough = beersupplyr >= totalbeerdemand;
+    islaborenough = totallaborsupply >= totallabordemand;
+    iswheatenough = totalwheatsupply >= wheatdemandr;
+
+    return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss, labordemand: totallabordemand.toFixed(2), pdlabor: pctdiff(totallaborsupply, totallabordemand).toFixed(2), enoughpizza: ispizzaenough, enoughbeer: isbeerenough, enoughbread: isbreadenough, enoughlabor: islaborenough, enoughwheat: iswheatenough};
 
   },
 

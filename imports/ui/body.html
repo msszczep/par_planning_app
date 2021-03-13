@@ -60,7 +60,7 @@
 <td class="whitestyle">{{supplyDemandData.pizzademand}}</td>
 <td class="whitestyle">{{supplyDemandData.beerdemand}}</td>
 <td class="whitestyle">{{supplyDemandData.breaddemand}}</td>
-<td class="whitestyle">x</td>
+<td class="whitestyle">{{supplyDemandData.labordemand}}</td>
 <td class="whitestyle">{{supplyDemandData.wheatdemand}}</td>
 </tr>
 <tr>
@@ -68,8 +68,16 @@
 <td class="whitestyle">{{supplyDemandData.pdpizza}}</td>
 <td class="whitestyle">{{supplyDemandData.pdbeer}}</td>
 <td class="whitestyle">{{supplyDemandData.pdbread}}</td>
-<td class="whitestyle">x</td>
+<td class="whitestyle">{{supplyDemandData.pdlabor}}</td>
 <td class="whitestyle">{{supplyDemandData.pdwheat}}</td>
+</tr>
+<tr>
+<td class="bluestyle">S >= D ?</td>
+<td class="whitestyle">{{supplyDemandData.enoughpizza}}</td>
+<td class="whitestyle">{{supplyDemandData.enoughbeer}}</td>
+<td class="whitestyle">{{supplyDemandData.enoughbread}}</td>
+<td class="whitestyle">{{supplyDemandData.enoughlabor}}</td>
+<td class="whitestyle">{{supplyDemandData.enoughwheat}}</td>
 </tr>
 </table>
 <br><br>
@@ -245,7 +253,7 @@ Iteration: {{n}}
 <template name="chooserecipepane">
 
   <table border="2">
-  <tr><td><b>Which recipe do you choose?</b></td><td>Supply</td><td>SB/SC</td></tr>
+  <tr><td><b>Which recipe do you choose?</b></td><td><b>Supply</b></td><td><b>SB/SC</b></td></tr>
   <tr><td><button class="recipe" value="A">High labor, low-resource</button></td><td>{{data.supplyA}}</td><td>{{data.ratioA}}</td></tr>
   <tr><td><button class="recipe" value="B">Middle labor, middle resource</button></td><td>{{data.supplyB}}</td><td>{{data.ratioB}}</td></tr>
   <tr><td><button class="recipe" value="C">Low labor, high-resource</button></td><td>{{data.supplyC}}</td><td>{{data.ratioC}}</td></tr>

@@ -5,8 +5,15 @@ import '../imports/api/iterationdata.js'
 import '../imports/api/prices.js'
 import { Meteor } from 'meteor/meteor';
 import { Councils } from '../imports/api/councils.js';
+import { Actors } from '../imports/api/actors.js';
 import { IterationCounter } from '../imports/api/iterationcounter.js';
+import { IterationData } from '../imports/api/iterationdata.js';
 import { Prices } from '../imports/api/prices.js';
+
+// Actors.drop();
+// IterationData.drop();
+// IterationCounter.drop();
+// Prices.drop();
 
 if (IterationCounter.find().count() === 0) {
   IterationCounter.insert({createdAt: Date(), iteration: 1});
