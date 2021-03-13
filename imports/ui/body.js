@@ -184,7 +184,7 @@ Template.viewpaneloggedin.helpers({
     breadsupplyr = breadhours / laborConvert["bread"][winningbreadrecipe];
     pizzasupplyr = pizzahours / laborConvert["pizza"][winningpizzarecipe];
     beersupplyr = beerhours / laborConvert["beer"][winningbeerrecipe];
-    totallaborsupply = a * 10;
+    totallaborsupply = breadhours + pizzahours + beerhours;
     totalwheatsupply = a * 12;
 
     pizzawheatdemand = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]);
@@ -192,9 +192,9 @@ Template.viewpaneloggedin.helpers({
     breadwheatdemand = (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
     wheatdemandr = pizzawheatdemand + beerwheatdemand + breadwheatdemand;
 
-    pizzalabordemand = totalpizzademand * laborConvert["pizza"][winningbreadrecipe];
+    pizzalabordemand = totalpizzademand * laborConvert["pizza"][winningpizzarecipe];
     breadlabordemand = totalbreaddemand * laborConvert["bread"][winningbreadrecipe];
-    beerlabordemand = totalbeerdemand * laborConvert["beer"][winningbreadrecipe];
+    beerlabordemand = totalbeerdemand * laborConvert["beer"][winningbeerrecipe];
     totallabordemand = pizzalabordemand + breadlabordemand + beerlabordemand;
 
     p = Prices.find({iteration: c}).fetch({})[0];
@@ -562,7 +562,7 @@ Template.resetpane.events({
     breadsupplyr = breadhours / laborConvert["bread"][winningbreadrecipe];
     pizzasupplyr = pizzahours / laborConvert["pizza"][winningpizzarecipe];
     beersupplyr = beerhours / laborConvert["beer"][winningbeerrecipe];
-    totallaborsupply = a * 10;
+    totallaborsupply = breadhours + pizzahours + beerhours;
     totalwheatsupply = a * 12;
 
     pizzawheatdemand = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]);
