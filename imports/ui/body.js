@@ -339,37 +339,37 @@ Template.choosehourspane.helpers({
 
 Template.choosepizzapane.helpers({
 
-  rangearray() {
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  data() {
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
+    p = Prices.find({iteration: c}).fetch({})[0];
+    cs = Number(i.hoursToWork) * 15;
+    return {n: c, rangearray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], credits: cs, hoursToWork: i.hoursToWork, pizzaprice: p.pizza.toFixed(2)};
   },
-
-  n() {
-    return IterationCounter.find({}).fetch({})[0].iteration;
-  }
 
 });
 
 Template.choosebeerpane.helpers({
 
-  rangearray() {
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  data() {
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
+    p = Prices.find({iteration: c}).fetch({})[0];
+    cs = (Number(i.hoursToWork) * 15) - (Number(i.pizza) * p.pizza);
+    return {n: c, rangearray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], credits: cs.toFixed(2), hoursToWork: i.hoursToWork, beerprice: p.beer.toFixed(2)};
   },
-
-  n() {
-    return IterationCounter.find({}).fetch({})[0].iteration;
-  }
 
 });
 
 Template.choosebreadpane.helpers({
 
-  rangearray() {
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  data() {
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
+    p = Prices.find({iteration: c}).fetch({})[0];
+    cs = (Number(i.hoursToWork) * 15) - (Number(i.pizza) * p.pizza) - (Number(i.beer) * p.beer);
+    return {n: c, rangearray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], credits: cs.toFixed(2), hoursToWork: i.hoursToWork, breadprice: p.bread.toFixed(2)};
   },
-
-  n() {
-    return IterationCounter.find({}).fetch({})[0].iteration;
-  }
 
 });
 

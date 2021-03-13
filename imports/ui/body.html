@@ -266,36 +266,51 @@ Credits: {{data.credits}}
 </template>
 
 <template name="choosepizzapane">
-  <b>In your neighborhood, in iteration {{n}}, how many pizzas do you want?</b>
+  <b>How many pizzas do you want?</b>
   <br><br>
-  {{#each a in rangearray}}
+  {{#each a in data.rangearray}}
     <button class="pizza" value="{{a}}">{{a}}
     </button>
   {{/each}}
 <br><br>
 <hr>
 <br>
-Iteration: {{n}}<br>
-Hours to work: {{hoursToWork}}<BR>
-Credits: {{credits}}
+Iteration: {{data.n}}<br>
+Hours to work: {{data.hoursToWork}}<br>
+Available credits: {{data.credits}}<br>
+Current pizza price: {{data.pizzaprice}}
 </template>
 
 <template name="choosebeerpane">
-  <b>In your neighborhood, in iteration {{n}}, how many beers do you want?</b>
+  <b>How many beers do you want?</b>
   <br><br>
-  {{#each a in rangearray}}
+  {{#each a in data.rangearray}}
     <button class="beer" value="{{a}}">{{a}}
     </button>
   {{/each}}
+<br><br>
+<hr>
+<br>
+Iteration: {{data.n}}<br>
+Hours to work: {{data.hoursToWork}}<br>
+Available credits: {{data.credits}}<br>
+Current beer price: {{data.beerprice}}
 </template>
 
 <template name="choosebreadpane">
-  <b>In your neighborhood, in iteration {{n}}, how many loaves of bread do you want?</b>
+  <b>How many loaves of bread do you want?</b>
   <br><br>
-  {{#each a in rangearray}}
+  {{#each a in data.rangearray}}
     <button class="bread" value="{{a}}">{{a}}
     </button>
   {{/each}}
+<br><br>
+<hr>
+<br>
+Iteration: {{data.n}}<br>
+Hours to work: {{data.hoursToWork}}<br>
+Available credits: {{data.credits}}<br>
+Current bread price: {{data.breadprice}}
 </template>
 
 <template name="iterationstatuspane">
