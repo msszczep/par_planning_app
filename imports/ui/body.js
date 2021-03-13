@@ -75,27 +75,33 @@ Template.viewpaneloggedin.helpers({
   },
 
   workersInBakery() {
-    return Actors.find({workplace: "Bakery"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({workplace: "Bakery", iteration: c}).fetch({});
   },
 
   workersInBrewery() {
-    return Actors.find({workplace: "Brewery"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({workplace: "Brewery", iteration: c}).fetch({});
   },
 
   workersInPizzeria() {
-    return Actors.find({workplace: "Pizzeria"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({workplace: "Pizzeria", iteration: c}).fetch({});
   },
 
   rockerhillmembers() {
-    return Actors.find({neighborhood: "Rocker Hill"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({neighborhood: "Rocker Hill", iteration: c}).fetch({});
   },
 
   goldmangreenmembers() {
-    return Actors.find({neighborhood: "Goldman Green"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({neighborhood: "Goldman Green", iteration: c}).fetch({});
   },
 
   bakuninbaymembers() {
-    return Actors.find({neighborhood: "Bakunin Bay"}).fetch({});
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    return IterationData.find({neighborhood: "Bakunin Bay", iteration: c}).fetch({});
   },
 
   currentPrices() {

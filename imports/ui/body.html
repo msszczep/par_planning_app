@@ -79,58 +79,77 @@ Workplaces
 </th>
 <tr>
 <td class="{{supplyDemandData.bakerystyle}}">
-<b>Bakery</b><br>
+<center><b>Bakery</b></center>
+<table>
+<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInBakery}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
+</table>
 <br>
-SB/SC: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{supplyDemandData.bakerySc}})
+<b>SB/SC</b>: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{supplyDemandData.bakerySc}})
 </td>
 <td class="{{supplyDemandData.brewerystyle}}">
-<b>Brewery</b><br>
+<center><b>Brewery</b></center><br>
+<table>
+<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInBrewery}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
-SB/SC: {{supplyDemandData.breweryRatio}} ({{supplyDemandData.brewerySb}} / {{supplyDemandData.brewerySc}})
+</table>
+<br>
+<b>SB/SC</b>: {{supplyDemandData.breweryRatio}} ({{supplyDemandData.brewerySb}} / {{supplyDemandData.brewerySc}})
 </td>
 <td class="{{supplyDemandData.pizzeriastyle}}">
-<b>Pizzeria</b><br>
+<center><b>Pizzeria</b></center><br>
+<table>
+<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInPizzeria}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
+</table>
 <br>
-SB/SC: {{supplyDemandData.pizzeriaRatio}} ({{supplyDemandData.pizzeriaSb}} / {{supplyDemandData.pizzeriaSc}})
+<b>SB/SC</b>: {{supplyDemandData.pizzeriaRatio}} ({{supplyDemandData.pizzeriaSb}} / {{supplyDemandData.pizzeriaSc}})
 </td>
 </tr>
 </table>
-<br>
+<br><br>
 <table>
 <th class="bluestyle" colspan="3">
 Neighborhoods
 </th>
 <tr>
 <td class="{{supplyDemandData.goldmangreenstyle}}">
-<b>Goldman Green</b><br>
+<center><b>Goldman Green</b></center><br>
+<table>
+<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in goldmangreenmembers}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
+</table>
 <br>
-Credit surplus: {{supplyDemandData.goldmangreensurplus}} ({{supplyDemandData.goldmangreencredit}} - {{supplyDemandData.goldmangreendebt}})
+<b>Credit surplus</b>: {{supplyDemandData.goldmangreensurplus}} ({{supplyDemandData.goldmangreencredit}} - {{supplyDemandData.goldmangreendebt}})
 </td>
 <td class="{{supplyDemandData.rockerhillstyle}}">
-<b>Rocker Hill</b><br>
+<center><b>Rocker Hill</b></center><br>
+<table>
+<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in rockerhillmembers}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
+</table>
 <br>
-Credit surplus: {{supplyDemandData.rockerhillsurplus}} ({{supplyDemandData.rockerhillcredit}} - {{supplyDemandData.rockerhilldebt}})
+<b>Credit surplus</b>: {{supplyDemandData.rockerhillsurplus}} ({{supplyDemandData.rockerhillcredit}} - {{supplyDemandData.rockerhilldebt}})
 </td><td class="{{supplyDemandData.bakuninbaystyle}}">
-<b>Bakunin Bay</b><br>
+<center><b>Bakunin Bay</b></center><br>
+<table>
+<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in bakuninbaymembers}}
-&middot; {{a.actorEmail}}<br>
+<tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
+</table>
 <br>
-Credit surplus: {{supplyDemandData.bakuninbaysurplus}} ({{supplyDemandData.bakuninbaycredit}} - {{supplyDemandData.bakuninbaydebt}})
+<b>Credit surplus</b>: {{supplyDemandData.bakuninbaysurplus}} ({{supplyDemandData.bakuninbaycredit}} - {{supplyDemandData.bakuninbaydebt}})
 </td>
 </tr>
 </table>
