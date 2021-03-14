@@ -77,7 +77,7 @@ Template.editpaneloggedin.helpers({
     c = IterationCounter.find({}).fetch({})[0];
     a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration, locked: 1}).fetch({})[0];
-    return i === undefined;
+    return ((a != undefined) && (a.neighborhoodId != undefined) && (i === undefined));
   },
 
 });

@@ -10,10 +10,10 @@ import { IterationCounter } from '../imports/api/iterationcounter.js';
 import { IterationData } from '../imports/api/iterationdata.js';
 import { Prices } from '../imports/api/prices.js';
 
-// Actors.drop();
-// IterationData.drop();
-// IterationCounter.drop();
-// Prices.drop();
+// Actors.rawCollection().drop();
+// IterationData.rawCollection().drop();
+// IterationCounter.rawCollection().drop();
+// Prices.rawCollection().drop();
 
 if (IterationCounter.find().count() === 0) {
   IterationCounter.insert({createdAt: Date(), iteration: 1});
