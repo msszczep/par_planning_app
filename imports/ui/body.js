@@ -401,6 +401,10 @@ Template.chooseidpane.helpers({
     return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   },
 
+  iterationHistory() {
+    return IterationData.find({actorId: Accounts.user()._id}).fetch({});
+  },
+
   recipedata() {
     const laborConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
                           "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},

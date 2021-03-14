@@ -395,7 +395,28 @@ Number of loaves of bread: {{iterationData.bread}}<br>
     <button class="bread" value="{{a}}">{{a}}
     </button>
   {{/each}}
-  <br><br><br>
+  <br><br>
+<table>
+<tr>
+<td class="bluestyle">History</td>
+<td class="bluestyle">Hours</td>
+<td class="bluestyle">Recipe</td>
+<td class="bluestyle">Pizza</td>
+<td class="bluestyle">Beer</td>
+<td class="bluestyle">Bread</td>
+</tr>
+{{#each h in iterationHistory}}
+<tr>
+<td class="bluestyle">Iter. {{h.iteration}}</td>
+<td class="whitestyle">{{h.hoursToWork}}</td>
+<td class="whitestyle">{{h.recipe}}</td>
+<td class="whitestyle">{{h.pizza}}</td>
+<td class="whitestyle">{{h.beer}}</td>
+<td class="whitestyle">{{h.bread}}</td>
+</tr>
+{{/each}}
+</table>
+<br><br>
   <button class="lockiteration">Lock this iteration</button>
 </template>
 
