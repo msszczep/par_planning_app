@@ -32,6 +32,9 @@
 <template name="viewpaneloggedin">
 <table>
 <tr>
+<td>
+<table>
+<tr>
 <td class="bluestyle">Iteration: {{currentIteration}}</td>
 <td class="bluestyle">Pizza</td>
 <td class="bluestyle">Beer</td>
@@ -78,6 +81,31 @@
 <td class="whitestyle">{{supplyDemandData.enoughbread}}</td>
 <td class="whitestyle">{{supplyDemandData.enoughlabor}}</td>
 <td class="whitestyle">{{supplyDemandData.enoughwheat}}</td>
+</tr>
+</table>
+</td>
+<td>
+<table>
+<tr>
+<td class="bluestyle">Price history</td>
+<td class="bluestyle">Pizza</td>
+<td class="bluestyle">Beer</td>
+<td class="bluestyle">Bread</td>
+<td class="bluestyle">Labor</td>
+<td class="bluestyle">Wheat</td>
+</tr>
+{{#each e in supplyDemandData.allprices}}
+<tr>
+  <td class="bluestyle">Iter. {{e.iteration}}</td>
+<td class="whitestyle">{{e.pizza}}</td>
+<td class="whitestyle">{{e.beer}}</td>
+<td class="whitestyle">{{e.bread}}</td>
+<td class="whitestyle">{{e.labor}}</td>
+<td class="whitestyle">{{e.wheat}}</td>
+</tr>
+{{/each}}
+</table>
+</td>
 </tr>
 </table>
 <br><br>
@@ -247,7 +275,7 @@ Once all the prices are adjusted, a new iteration begins where actors resubmit t
   {{/each}}
 <hr>
 <br>
-Iteration: {{n}}
+
 </template>
 
 <template name="chooserecipepane">
@@ -332,6 +360,45 @@ Number of loaves of bread: {{iterationData.bread}}<br>
   <button class="newiteration">New iteration</button>
 </template>
 
+<template name="chooseidpane">
+  <b>How many hours do you wish to work?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="hoursToWork" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
+  <br><br>
+  <table border="2">
+  <tr><td><b>Which recipe do you choose?</b></td><td><b>Supply</b></td><td><b>SB/SC</b></td></tr>
+  <tr><td><button class="recipe" value="A">High labor, low-resource</button></td><td>{{recipedata.supplyA}}</td><td>{{recipedata.ratioA}}</td></tr>
+  <tr><td><button class="recipe" value="B">Middle labor, middle resource</button></td><td>{{recipedata.supplyB}}</td><td>{{recipedata.ratioB}}</td></tr>
+  <tr><td><button class="recipe" value="C">Low labor, high-resource</button></td><td>{{recipedata.supplyC}}</td><td>{{recipedata.ratioC}}</td></tr>
+  </table>
+  <br>
+  <b>How many pizzas do you want?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="pizza" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
+  <br><br>
+  <b>How many beers do you want?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="beer" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
+  <br><br>
+  <b>How many loaves of bread do you want?</b>
+  <br><br>
+  {{#each a in rangearray}}
+    <button class="bread" value="{{a}}">{{a}}
+    </button>
+  {{/each}}
+  <br><br><br>
+  <button class="lockiteration">Lock this iteration</button>
+</template>
+
 <template name="editpaneloggedin">
   <br>
   {{#if chooseWcQ}}
@@ -340,22 +407,10 @@ Number of loaves of bread: {{iterationData.bread}}<br>
   {{#if chooseCcQ}}
     {{> chooseccpane}}
   {{/if}}
-  {{#if chooseHoursQ}}
-    {{> choosehourspane}}
+  {{#if chooseIterationDataQ}}
+    {{> chooseidpane}}
   {{/if}}
-  {{#if chooseRecipeQ}}
-    {{> chooserecipepane}}
-  {{/if}}
-  {{#if choosePizzaQ}}
-    {{> choosepizzapane}}
-  {{/if}}
-  {{#if chooseBeerQ}}
-    {{> choosebeerpane}}
-  {{/if}}
-  {{#if chooseBreadQ}}
-    {{> choosebreadpane}}
-  {{/if}}
-  {{#if iterationStatusQ}}
+  {{#if submittedIterationQ}}
     {{> iterationstatuspane}}
   {{/if}}
   <br>

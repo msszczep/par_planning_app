@@ -66,6 +66,20 @@ Template.editpaneloggedin.helpers({
     return ((a != undefined) && (a.neighborhoodId != undefined) && (i != undefined) && (i.recipe != undefined) && (i.pizza != undefined) && (i.beer != undefined) && (i.bread != undefined));
   },
 
+  submittedIterationQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration, locked: 1}).fetch({})[0];
+    return (i != undefined);
+  },
+
+  chooseIterationDataQ() {
+    c = IterationCounter.find({}).fetch({})[0];
+    a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration, locked: 1}).fetch({})[0];
+    return i === undefined;
+  },
+
 });
 
 Template.viewpaneloggedin.helpers({
@@ -199,6 +213,12 @@ Template.viewpaneloggedin.helpers({
 
     p = Prices.find({iteration: c}).fetch({})[0];
 
+    pricesall = Prices.find({}).fetch({});
+    pricesallr = pricesall.reduce(function (acc, idatum, cI) {
+      acc.push({iteration: idatum.iteration, pizza: idatum.pizza.toFixed(2), beer: idatum.beer.toFixed(2), bread: idatum.bread.toFixed(2), wheat: idatum.wheat.toFixed(2), labor: idatum.wheat.toFixed(2)});
+      return acc;
+    }, []);
+
     brewerysbr = beersupplyr * p.beer;
     bakerysbr = breadsupplyr * p.bread;
     pizzeriasbr = pizzasupplyr * p.pizza;
@@ -251,7 +271,7 @@ Template.viewpaneloggedin.helpers({
     islaborenough = totallaborsupply >= totallabordemand;
     iswheatenough = totalwheatsupply >= wheatdemandr;
 
-    return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss, labordemand: totallabordemand.toFixed(2), pdlabor: pctdiff(totallaborsupply, totallabordemand).toFixed(2), enoughpizza: ispizzaenough, enoughbeer: isbeerenough, enoughbread: isbreadenough, enoughlabor: islaborenough, enoughwheat: iswheatenough};
+    return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss, labordemand: totallabordemand.toFixed(2), pdlabor: pctdiff(totallaborsupply, totallabordemand).toFixed(2), enoughpizza: ispizzaenough, enoughbeer: isbeerenough, enoughbread: isbreadenough, enoughlabor: islaborenough, enoughwheat: iswheatenough, allprices: pricesallr};
 
   },
 
@@ -289,15 +309,9 @@ Template.chooserecipepane.helpers({
     supplyA = Number(i.hoursToWork) / laborConvert[i.workplace]["A"];
     supplyB = Number(i.hoursToWork) / laborConvert[i.workplace]["B"];
     supplyC = Number(i.hoursToWork) / laborConvert[i.workplace]["C"];
-    console.log(supplyA);
-    console.log(supplyB);
-    console.log(supplyC);
     wheatDemandA = supplyA * wheatConvert[i.workplace]["A"];
     wheatDemandB = supplyB * wheatConvert[i.workplace]["B"];
     wheatDemandC = supplyC * wheatConvert[i.workplace]["C"];
-    console.log(wheatDemandA);
-    console.log(wheatDemandB);
-    console.log(wheatDemandC);
     if (i.workplace == "Bakery") {
       priceToUse = p.bread;
     } else if (i.workplace == "Brewery") {
@@ -308,15 +322,9 @@ Template.chooserecipepane.helpers({
     sbA = supplyA * priceToUse;
     sbB = supplyB * priceToUse;
     sbC = supplyC * priceToUse;
-    console.log(sbA);
-    console.log(sbB);
-    console.log(sbC);
     scA = (Number(i.hoursToWork) * p.labor) + (wheatDemandA * priceToUse);
     scB = (Number(i.hoursToWork) * p.labor) + (wheatDemandB * priceToUse);
     scC = (Number(i.hoursToWork) * p.labor) + (wheatDemandC * priceToUse);
-    console.log(scA);
-    console.log(scB);
-    console.log(scC);
     sbscA = sbA / scA;
     sbscB = sbB / scB;
     sbscC = sbC / scC;
@@ -387,6 +395,139 @@ Template.iterationstatuspane.helpers({
 
 });
 
+Template.chooseidpane.helpers({
+
+  rangearray() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  },
+
+  recipedata() {
+    const laborConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "Pizzeria": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
+    const wheatConvert = {"Bakery": {"A": 1.25, "B": 1, "C": 0.75, "": 1},
+                          "Brewery": {"A": 1.75, "B": 1, "C": 0.25, "": 1},
+                          "Pizzeria": {"A": 1.5, "B": 1, "C": 0.5, "": 1}};
+    n = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    cs = Number(i.hoursToWork) * 15;
+    p = Prices.find({iteration: n}).fetch({})[0];
+    supplyA = Number(i.hoursToWork) / laborConvert[i.workplace]["A"];
+    supplyB = Number(i.hoursToWork) / laborConvert[i.workplace]["B"];
+    supplyC = Number(i.hoursToWork) / laborConvert[i.workplace]["C"];
+    wheatDemandA = supplyA * wheatConvert[i.workplace]["A"];
+    wheatDemandB = supplyB * wheatConvert[i.workplace]["B"];
+    wheatDemandC = supplyC * wheatConvert[i.workplace]["C"];
+    if (i.workplace == "Bakery") {
+      priceToUse = p.bread;
+    } else if (i.workplace == "Brewery") {
+      priceToUse = p.beer;
+    } else if (i.workplace == "Pizzeria") {
+      priceToUse = p.pizza;
+    }
+    sbA = supplyA * priceToUse;
+    sbB = supplyB * priceToUse;
+    sbC = supplyC * priceToUse;
+    scA = (Number(i.hoursToWork) * p.labor) + (wheatDemandA * priceToUse);
+    scB = (Number(i.hoursToWork) * p.labor) + (wheatDemandB * priceToUse);
+    scC = (Number(i.hoursToWork) * p.labor) + (wheatDemandC * priceToUse);
+    sbscA = sbA / scA;
+    sbscB = sbB / scB;
+    sbscC = sbC / scC;
+    return {supplyA: supplyA.toFixed(2), supplyB: supplyB.toFixed(2), supplyC: supplyC.toFixed(2), ratioA: sbscA.toFixed(2), ratioB: sbscB.toFixed(2), ratioC: sbscC.toFixed(2)};
+  },
+
+  data() {
+    c = IterationCounter.find({}).fetch({})[0].iteration;
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
+    p = Prices.find({iteration: c}).fetch({})[0];
+    cs = (Number(i.hoursToWork) * 15) - (Number(i.pizza) * p.pizza);
+    return {n: c, credits: cs.toFixed(2), hoursToWork: i.hoursToWork, beerprice: p.beer.toFixed(2)};
+  },
+
+});
+
+Template.chooseidpane.events({
+
+  'click .recipe' (event) {
+    event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    if (i === undefined) {
+      IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
+    }
+    const j = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    const target = event.target.value;
+    IterationData.update(i._id, {$set: {recipe: target},});
+  },
+
+  'click .hoursToWork' (event) {
+    event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    if (i === undefined) {
+      IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
+    }
+    const j = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    const target = event.target.value;
+    IterationData.update(j._id, {$set: {hoursToWork: target},});
+  },
+
+  'click .pizza' (event) {
+    event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    if (i === undefined) {
+      IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
+    }
+    const j = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    const target = event.target.value;
+    IterationData.update(j._id, {$set: {pizza: target},});
+  },
+
+  'click .beer' (event) {
+    event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    if (i === undefined) {
+      IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
+    }
+    const j = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    const target = event.target.value;
+    IterationData.update(j._id, {$set: {beer: target},});
+  },
+
+  'click .bread' (event) {
+    event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const email = Accounts.user().emails[0].address;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    if (i === undefined) {
+      IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
+    }
+    const j = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    const target = event.target.value;
+    IterationData.update(j._id, {$set: {bread: target},});
+  },
+
+  'click .lockiteration' (event) {
+    event.preventDefault();
+    const n = IterationCounter.find({}).fetch({})[0].iteration;
+    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
+    IterationData.update(i._id, {$set: {locked: 1},});
+  },
+
+});
+
 Template.choosewcpane.events({
 
   'click .joinworkplace' (event) {
@@ -425,7 +566,9 @@ Template.chooserecipepane.events({
 
   'click .recipe' (event) {
     event.preventDefault();
+    const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
+    IterationData.upsert({actorId: Accounts.user()._id, iteration: n}, {actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
     IterationData.update(i._id, {$set: {recipe: target},});
