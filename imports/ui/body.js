@@ -215,7 +215,7 @@ Template.viewpaneloggedin.helpers({
 
     pricesall = Prices.find({}).fetch({});
     pricesallr = pricesall.reduce(function (acc, idatum, cI) {
-      acc.push({iteration: idatum.iteration, pizza: idatum.pizza.toFixed(2), beer: idatum.beer.toFixed(2), bread: idatum.bread.toFixed(2), wheat: idatum.wheat.toFixed(2), labor: idatum.wheat.toFixed(2)});
+      acc.push({iteration: idatum.iteration, pizza: idatum.pizza.toFixed(2), beer: idatum.beer.toFixed(2), bread: idatum.bread.toFixed(2), wheat: idatum.wheat.toFixed(2), labor: idatum.labor.toFixed(2)});
       return acc;
     }, []);
 
@@ -712,6 +712,11 @@ Template.resetpane.events({
     totallaborsupply = breadhours + pizzahours + beerhours;
     totalwheatsupply = a * 12;
 
+    pizzalabordemand = totalpizzademand * laborConvert["pizza"][winningpizzarecipe];
+    breadlabordemand = totalbreaddemand * laborConvert["bread"][winningbreadrecipe];
+    beerlabordemand = totalbeerdemand * laborConvert["beer"][winningbeerrecipe];
+    totallabordemand = pizzalabordemand + breadlabordemand + beerlabordemand;
+
     pizzawheatdemand = (pizzasupplyr * wheatConvert["pizza"][winningpizzarecipe]);
     beerwheatdemand = (beersupplyr * wheatConvert["beer"][winningbeerrecipe]);
     breadwheatdemand = (breadsupplyr * wheatConvert["bread"][winningbreadrecipe]);
@@ -723,11 +728,12 @@ Template.resetpane.events({
     newbreadprice = newpricefunction(breadsupplyr, totalbreaddemand, p.bread);
     newbeerprice = newpricefunction(beersupplyr, totalbeerdemand, p.beer);
     newwheatprice = newpricefunction(totalwheatsupply, wheatdemandr, p.wheat);
+    newlaborprice = newpricefunction(totallaborsupply, totallabordemand, p.labor)
 
     const newincrement = c + 1;
     IterationCounter.update(ic._id, {$set: {iteration: newincrement}});
 
-    Prices.insert({iteration: newincrement, pizza: newpizzaprice, beer: newbeerprice, bread: newbreadprice, wheat: newwheatprice, labor: p.labor});
+    Prices.insert({iteration: newincrement, pizza: newpizzaprice, beer: newbeerprice, bread: newbreadprice, wheat: newwheatprice, labor: newlaborprice});
   }
 
 });
