@@ -369,18 +369,6 @@ Template.choosebeerpane.helpers({
 
 });
 
-Template.choosebreadpane.helpers({
-
-  data() {
-    c = IterationCounter.find({}).fetch({})[0].iteration;
-    i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
-    p = Prices.find({iteration: c}).fetch({})[0];
-    cs = (Number(i.hoursToWork) * 15) - (Number(i.pizza) * p.pizza) - (Number(i.beer) * p.beer);
-    return {n: c, rangearray: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], credits: cs.toFixed(2), hoursToWork: i.hoursToWork, breadprice: p.bread.toFixed(2)};
-  },
-
-});
-
 Template.iterationstatuspane.helpers({
 
   iterationData() {
@@ -441,12 +429,17 @@ Template.chooseidpane.helpers({
     return {supplyA: supplyA.toFixed(2), supplyB: supplyB.toFixed(2), supplyC: supplyC.toFixed(2), ratioA: sbscA.toFixed(2), ratioB: sbscB.toFixed(2), ratioC: sbscC.toFixed(2)};
   },
 
-  data() {
+  creditdata() {
     c = IterationCounter.find({}).fetch({})[0].iteration;
     i = IterationData.find({actorId: Accounts.user()._id, iteration: c}).fetch({})[0];
     p = Prices.find({iteration: c}).fetch({})[0];
-    cs = (Number(i.hoursToWork) * 15) - (Number(i.pizza) * p.pizza);
-    return {n: c, credits: cs.toFixed(2), hoursToWork: i.hoursToWork, beerprice: p.beer.toFixed(2)};
+    cs = (Number(i.hoursToWork) * 15);
+    yourpizzacosts = p.pizza * i.pizza;
+    yourbeercosts = p.beer * i.beer;
+    yourbreadcosts = p.bread * i.bread;
+    yoursurplus = cs - yourpizzacosts - yourbeercosts - yourbreadcosts;
+    yoursurpluscss = yoursurplus >= 0 ? "greenstyle" : "redstyle";
+    return {n: c, credits: cs.toFixed(2), hoursToWork: i.hoursToWork, beerprice: p.beer.toFixed(2), pizzacosts: yourpizzacosts.toFixed(2), breadcosts: yourbreadcosts.toFixed(2), beercosts: yourbeercosts.toFixed(2), surplus: yoursurplus.toFixed(2), hoursqty: i.hoursToWork, pizzaqty: i.pizza, beerqty: i.beer, breadqty: i.bread, beerprice: p.beer.toFixed(2), pizzaprice: p.pizza.toFixed(2), breadprice: p.bread.toFixed(2), surpluscss: yoursurpluscss};
   },
 
 });
@@ -457,7 +450,7 @@ Template.chooseidpane.events({
     event.preventDefault();
     const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const email = Accounts.user().emails[0].address.substring(0, 5);
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     if (i === undefined) {
       IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
@@ -471,7 +464,7 @@ Template.chooseidpane.events({
     event.preventDefault();
     const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const email = Accounts.user().emails[0].address.substring(0, 5);
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     if (i === undefined) {
       IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
@@ -485,7 +478,7 @@ Template.chooseidpane.events({
     event.preventDefault();
     const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const email = Accounts.user().emails[0].address.substring(0, 5);
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     if (i === undefined) {
       IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
@@ -499,7 +492,7 @@ Template.chooseidpane.events({
     event.preventDefault();
     const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const email = Accounts.user().emails[0].address.substring(0, 5);
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     if (i === undefined) {
       IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
@@ -513,7 +506,7 @@ Template.chooseidpane.events({
     event.preventDefault();
     const a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
     const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const email = Accounts.user().emails[0].address;
+    const email = Accounts.user().emails[0].address.substring(0, 5);
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     if (i === undefined) {
       IterationData.insert({actorId: Accounts.user()._id, iteration: n, actorEmail: email, workplace: a.workplace, workplaceId: a.workplaceId, neighborhood: a.neighborhood, neighborhoodId: a.neighborhoodId});
@@ -600,18 +593,6 @@ Template.choosebeerpane.events({
     const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
     const target = event.target.value;
     IterationData.update(i._id, {$set: {beer: target},});
-  }
-
-});
-
-Template.choosebreadpane.events({
-
-  'click .bread' (event) {
-    event.preventDefault();
-    const n = IterationCounter.find({}).fetch({})[0].iteration;
-    const i = IterationData.find({actorId: Accounts.user()._id, iteration: n}).fetch({})[0];
-    const target = event.target.value;
-    IterationData.update(i._id, {$set: {bread: target},});
   }
 
 });

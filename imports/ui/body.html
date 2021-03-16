@@ -117,7 +117,7 @@ Workplaces
 <td class="{{supplyDemandData.bakerystyle}}">
 <center><b>Bakery</b></center>
 <table>
-<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInBakery}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
@@ -128,7 +128,7 @@ Workplaces
 <td class="{{supplyDemandData.brewerystyle}}">
 <center><b>Brewery</b></center><br>
 <table>
-<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInBrewery}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
@@ -139,7 +139,7 @@ Workplaces
 <td class="{{supplyDemandData.pizzeriastyle}}">
 <center><b>Pizzeria</b></center><br>
 <table>
-<tr><td><b>Email</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Hrs</b></td><td><b>Rec.</b></td></tr>
 {{#each a in workersInPizzeria}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.hoursToWork}}</td><td>{{a.recipe}}</td></tr>
 {{/each}}
@@ -158,7 +158,7 @@ Neighborhoods
 <td class="{{supplyDemandData.goldmangreenstyle}}">
 <center><b>Goldman Green</b></center><br>
 <table>
-<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in goldmangreenmembers}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
@@ -169,7 +169,7 @@ Neighborhoods
 <td class="{{supplyDemandData.rockerhillstyle}}">
 <center><b>Rocker Hill</b></center><br>
 <table>
-<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in rockerhillmembers}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
@@ -179,7 +179,7 @@ Neighborhoods
 </td><td class="{{supplyDemandData.bakuninbaystyle}}">
 <center><b>Bakunin Bay</b></center><br>
 <table>
-<tr><td><b>Email</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
+<tr><td><b>Actor</b></td><td><b>Beer</b></td><td><b>Bread</b></td><td><b>Pizza</b></td></tr>
 {{#each a in bakuninbaymembers}}
 <tr><td>{{a.actorEmail}}</td><td>{{a.beer}}</td><td>{{a.bread}}</td><td>{{a.pizza}}</td></tr>
 {{/each}}
@@ -325,22 +325,6 @@ Available credits: {{data.credits}}<br>
 Current beer price: {{data.beerprice}}
 </template>
 
-<template name="choosebreadpane">
-  <b>How many loaves of bread do you want?</b>
-  <br><br>
-  {{#each a in data.rangearray}}
-    <button class="bread" value="{{a}}">{{a}}
-    </button>
-  {{/each}}
-<br><br>
-<hr>
-<br>
-Iteration: {{data.n}}<br>
-Hours to work: {{data.hoursToWork}}<br>
-Available credits: {{data.credits}}<br>
-Current bread price: {{data.breadprice}}
-</template>
-
 <template name="iterationstatuspane">
 Your iteration submission is now complete.  For iteration {{iterationData.iteration}}, you submitted:<br><br>
 Hours to work: {{iterationData.hoursToWork}}<br>
@@ -361,6 +345,41 @@ Number of loaves of bread: {{iterationData.bread}}<br>
 </template>
 
 <template name="chooseidpane">
+<table>
+<tr>
+<td class="bluestyle"></td>
+<td class="bluestyle">Hours</td>
+<td class="bluestyle">Pizza</td>
+<td class="bluestyle">Beer</td>
+<td class="bluestyle">Bread</td>
+<td class="bluestyle">Surplus</td>
+</tr>
+<tr>
+<td class="bluestyle">Qty.</td>
+<td class="whitestyle">{{creditdata.hoursqty}}</td>
+<td class="whitestyle">{{creditdata.pizzaqty}}</td>
+<td class="whitestyle">{{creditdata.beerqty}}</td>
+<td class="whitestyle">{{creditdata.breadqty}}</td>
+<td class="whitestyle">-</td>
+</tr>
+<tr>
+<td class="bluestyle">Prices</td>
+<td class="whitestyle">15.00</td>
+<td class="whitestyle">{{creditdata.pizzaprice}}</td>
+<td class="whitestyle">{{creditdata.beerprice}}</td>
+<td class="whitestyle">{{creditdata.breadprice}}</td>
+<td class="whitestyle">-</td>
+</tr>
+<tr>
+<td class="bluestyle">Costs</td>
+<td class="whitestyle">{{creditdata.credits}}</td>
+<td class="whitestyle">{{creditdata.pizzacosts}}</td>
+<td class="whitestyle">{{creditdata.beercosts}}</td>
+<td class="whitestyle">{{creditdata.breadcosts}}</td>
+<td class="{{creditdata.surpluscss}}"><b>{{creditdata.surplus}}</b></td>
+</tr>
+</table>
+<br>
   <b>How many hours do you wish to work?</b>
   <br><br>
   {{#each a in rangearray}}
@@ -370,9 +389,9 @@ Number of loaves of bread: {{iterationData.bread}}<br>
   <br><br>
   <table border="2">
   <tr><td><b>Which recipe do you choose?</b></td><td><b>Supply</b></td><td><b>SB/SC</b></td></tr>
-  <tr><td><button class="recipe" value="A">High labor, low-resource</button></td><td>{{recipedata.supplyA}}</td><td>{{recipedata.ratioA}}</td></tr>
-  <tr><td><button class="recipe" value="B">Middle labor, middle resource</button></td><td>{{recipedata.supplyB}}</td><td>{{recipedata.ratioB}}</td></tr>
-  <tr><td><button class="recipe" value="C">Low labor, high-resource</button></td><td>{{recipedata.supplyC}}</td><td>{{recipedata.ratioC}}</td></tr>
+  <tr><td>A. <button class="recipe" value="A">High labor, low-resource</button></td><td>{{recipedata.supplyA}}</td><td>{{recipedata.ratioA}}</td></tr>
+  <tr><td>B. <button class="recipe" value="B">Middle labor, middle resource</button></td><td>{{recipedata.supplyB}}</td><td>{{recipedata.ratioB}}</td></tr>
+  <tr><td>C. <button class="recipe" value="C">Low labor, high-resource</button></td><td>{{recipedata.supplyC}}</td><td>{{recipedata.ratioC}}</td></tr>
   </table>
   <br>
   <b>How many pizzas do you want?</b>
