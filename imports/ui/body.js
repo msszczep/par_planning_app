@@ -182,7 +182,7 @@ Template.viewpaneloggedin.helpers({
       return to_return;
     };
 
-    pctdiff = function (a, b) { return Math.abs(a - b) * 100 / (a + b); }
+    pctdiff = function (a, b) { return Math.abs(a - b) * 100 / ((a + b) * 2); }
 
     pizzadata = IterationData.find({iteration: c, workplace: "Pizzeria"}).fetch({});
     beerdata = IterationData.find({iteration: c, workplace: "Brewery"}).fetch({});
