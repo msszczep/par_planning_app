@@ -124,6 +124,19 @@ Workplaces
 </table>
 <br>
 <b>SB/SC</b>: {{supplyDemandData.bakeryRatio}} ({{supplyDemandData.bakerySb}} / {{supplyDemandData.bakerySc}})
+<br><br>
+<table>
+<tr>
+<td class="bluestyle">Iteration</td>
+<td class="bluestyle">SB/SC</td>
+</tr>
+{{#each e in supplyDemandData.bakeryhistory}}
+<tr>
+<td class="whitestyle">{{e.iteration}}</td>
+<td class="whitestyle">{{e.ratio}}</td>
+</tr>
+{{/each}}
+</table>
 </td>
 <td class="{{supplyDemandData.brewerystyle}}">
 <center><b>Brewery</b></center><br>
@@ -135,6 +148,19 @@ Workplaces
 </table>
 <br>
 <b>SB/SC</b>: {{supplyDemandData.breweryRatio}} ({{supplyDemandData.brewerySb}} / {{supplyDemandData.brewerySc}})
+<br><br>
+<table>
+<tr>
+<td class="bluestyle">Iteration</td>
+<td class="bluestyle">SB/SC</td>
+</tr>
+{{#each e in supplyDemandData.breweryhistory}}
+<tr>
+<td class="whitestyle">{{e.iteration}}</td>
+<td class="whitestyle">{{e.ratio}}</td>
+</tr>
+{{/each}}
+</table>
 </td>
 <td class="{{supplyDemandData.pizzeriastyle}}">
 <center><b>Pizzeria</b></center><br>
@@ -146,6 +172,19 @@ Workplaces
 </table>
 <br>
 <b>SB/SC</b>: {{supplyDemandData.pizzeriaRatio}} ({{supplyDemandData.pizzeriaSb}} / {{supplyDemandData.pizzeriaSc}})
+<br><br>
+<table>
+<tr>
+<td class="bluestyle">Iteration</td>
+<td class="bluestyle">SB/SC</td>
+</tr>
+{{#each e in supplyDemandData.pizzeriahistory}}
+<tr>
+<td class="whitestyle">{{e.iteration}}</td>
+<td class="whitestyle">{{e.ratio}}</td>
+</tr>
+{{/each}}
+</table>
 </td>
 </tr>
 </table>

@@ -152,7 +152,36 @@ Template.viewpaneloggedin.helpers({
       }
       return acc;
     };
+
     sortingfunction = function (a, b) { return a[1] + b[1] };
+
+    sbschfunction = function (wp, good) {
+      to_return = [];
+      for (i = 1; i <= c; i++) {
+        ptu = Prices.find({iteration: i}).fetch({})[0];
+        istuff = IterationData.find({workplace: wp, iteration: i}).fetch({});
+        pwheat = ptu["wheat"];
+        pgood = ptu[good];
+        plabor = ptu["labor"];
+        hourssum = istuff.reduce(function (acc, idatum) {
+          return acc + Number(idatum.hoursToWork);
+        }, 0);
+        wrecipes = istuff.reduce(frequencyfunction, {});
+        recipesortable = [];
+        for (r in wrecipes) {
+          recipesortable.push([r, wrecipes[r]]);
+        };
+        recipesortable.sort(sortingfunction);
+        winningrecipe = recipesortable.length === 0 ? '' : recipesortable[0][0];
+        supplyt = hourssum / laborConvert[good][winningrecipe];
+        sbt = supplyt * pgood;
+        sct = (hourssum * plabor) + (pwheat * (wheatConvert[good][winningrecipe] * supplyt));
+        fratio = sbt / sct;
+        to_return.push({iteration: i, ratio: fratio.toFixed(2)});
+      }
+      return to_return;
+    };
+
     pctdiff = function (a, b) { return Math.abs(a - b) * 100 / (a + b); }
 
     pizzadata = IterationData.find({iteration: c, workplace: "Pizzeria"}).fetch({});
@@ -223,9 +252,9 @@ Template.viewpaneloggedin.helpers({
     bakerysbr = breadsupplyr * p.bread;
     pizzeriasbr = pizzasupplyr * p.pizza;
 
-    pizzeriascr = (pizzahours * p.pizza) + (pizzawheatdemand * p.wheat);
-    bakeryscr = (breadhours * p.bread) + (breadwheatdemand * p.wheat);
-    breweryscr = (beerhours * p.beer) + (beerwheatdemand * p.wheat);
+    pizzeriascr = (pizzahours * p.labor) + (pizzawheatdemand * p.wheat);
+    bakeryscr = (breadhours * p.labor) + (breadwheatdemand * p.wheat);
+    breweryscr = (beerhours * p.labor) + (beerwheatdemand * p.wheat);
 
     bakeryratior = bakerysbr / bakeryscr;
     breweryratior = brewerysbr / breweryscr;
@@ -275,7 +304,11 @@ Template.viewpaneloggedin.helpers({
 //    console.log(IterationData.find({}).fetch({}));
 //    console.log(Prices.find({}).fetch({}));
 
-    return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss, labordemand: totallabordemand.toFixed(2), pdlabor: pctdiff(totallaborsupply, totallabordemand).toFixed(2), enoughpizza: ispizzaenough, enoughbeer: isbeerenough, enoughbread: isbreadenough, enoughlabor: islaborenough, enoughwheat: iswheatenough, allprices: pricesallr};
+    bakeryratiohistory = sbschfunction("Bakery", "bread");
+    breweryratiohistory = sbschfunction("Brewery", "beer");
+    pizzeriaratiohistory = sbschfunction("Pizzeria", "pizza");
+
+    return {laborsupply: totallaborsupply.toFixed(2), wheatsupply: totalwheatsupply.toFixed(2), breadsupply: breadsupplyr.toFixed(2), pizzasupply: pizzasupplyr.toFixed(2), beersupply: beersupplyr.toFixed(2), wheatdemand: wheatdemandr.toFixed(2), pizzademand: totalpizzademand.toFixed(2), beerdemand: totalbeerdemand.toFixed(2), breaddemand: totalbreaddemand.toFixed(2), pdpizza: pctdiff(pizzasupplyr, totalpizzademand).toFixed(2), pdbread: pctdiff(breadsupplyr, totalbreaddemand).toFixed(2), pdbeer: pctdiff(beersupplyr, totalbeerdemand).toFixed(2), pdwheat: pctdiff(totalwheatsupply, wheatdemandr).toFixed(2), pizzeriaSb: pizzeriasbr.toFixed(2), brewerySb: brewerysbr.toFixed(2), bakerySb: bakerysbr.toFixed(2), pizzeriaSc: pizzeriascr.toFixed(2), bakerySc: bakeryscr.toFixed(2), bakeryRatio: bakeryratior.toFixed(2), brewerySc: breweryscr.toFixed(2), breweryRatio: breweryratior.toFixed(2), pizzeriaRatio: pizzeriaratior.toFixed(2), bakerystyle: bakerycss, brewerystyle: brewerycss, pizzeriastyle: pizzeriacss, rockerhillcredit: rockerhillcreditr.toFixed(2), rockerhilldebt: rockerhilldebitr.toFixed(2), rockerhillsurplus: rockerhillsurplusr.toFixed(2), rockerhillstyle: rockerhillcss, bakuninbaycredit: bakuninbaycreditr.toFixed(2), bakuninbaydebt: bakuninbaydebitr.toFixed(2), bakuninbaysurplus: bakuninbaysurplusr.toFixed(2), bakuninbaystyle: bakuninbaycss, goldmangreencredit: goldmangreencreditr.toFixed(2), goldmangreendebt: goldmangreendebitr.toFixed(2), goldmangreensurplus: goldmangreensurplusr.toFixed(2), goldmangreenstyle: goldmangreencss, labordemand: totallabordemand.toFixed(2), pdlabor: pctdiff(totallaborsupply, totallabordemand).toFixed(2), enoughpizza: ispizzaenough, enoughbeer: isbeerenough, enoughbread: isbreadenough, enoughlabor: islaborenough, enoughwheat: iswheatenough, allprices: pricesallr, bakeryhistory: bakeryratiohistory, breweryhistory: breweryratiohistory, pizzeriahistory: pizzeriaratiohistory};
 
   },
 
