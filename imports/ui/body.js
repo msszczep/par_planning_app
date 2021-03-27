@@ -13,21 +13,21 @@ Template.editpaneloggedin.helpers({
   chooseWcQ() {
     c = IterationCounter.find({}).fetch({})[0];
     a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
-    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
     return ((a === undefined) && (i === undefined));
   },
 
   chooseCcQ() {
     c = IterationCounter.find({}).fetch({})[0];
     a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
-    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
     return ((a != undefined) && (a.neighborhoodId === undefined) && (i === undefined));
   },
 
   chooseHoursQ() {
     c = IterationCounter.find({}).fetch({})[0];
     a = Actors.find({_id: Accounts.user()._id}).fetch({})[0];
-    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0]; 
+    i = IterationData.find({actorId: Accounts.user()._id, iteration: c.iteration}).fetch({})[0];
     return ((a != undefined) && (a.neighborhoodId != undefined) && (i === undefined));
   },
 
@@ -296,7 +296,7 @@ Template.viewpaneloggedin.helpers({
 
     ispizzaenough = pizzasupplyr >= totalpizzademand;
     isbeerenough = beersupplyr >= totalbeerdemand;
-    isbreadenough = beersupplyr >= totalbeerdemand;
+    isbreadenough = breadsupplyr >= totalbreaddemand;
     islaborenough = totallaborsupply >= totallabordemand;
     iswheatenough = totalwheatsupply >= wheatdemandr;
 
@@ -326,7 +326,7 @@ Template.choosewcpane.helpers({
 
   workplacesToShow() {
     return Councils.find({type: "w"}).fetch({});
-  }, 
+  },
 
 });
 
